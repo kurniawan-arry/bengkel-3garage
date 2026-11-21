@@ -1,0 +1,2007 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3 GARAGE — Subaru &amp; Mazda Specialist</title>
+  <meta name="description" content="Bengkel spesialis Subaru dan Mazda: Boxer engine, Skyactiv, AWD, CVT, transmisi, suspensi, perawatan berkala, konsultasi & booking WhatsApp, CMS admin, serta builder invoice Google Sheets." />
+
+  <!-- Inter & Plus Jakarta Sans Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'Inter', 'system-ui', 'sans-serif']
+          },
+          colors: {
+            brand: {
+              orange: '#F97316',
+              orangeDark: '#EA580C',
+              charcoal: '#0F172A',
+              slateDark: '#1E293B'
+            }
+          },
+          boxShadow: {
+            'garage': '0 14px 34px -10px rgba(15, 23, 42, 0.14)',
+            'orange-glow': '0 10px 25px -6px rgba(249, 115, 22, 0.42)'
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    body {
+      font-family: 'Inter', 'Plus Jakarta Sans', system-ui, sans-serif;
+      background-color: #F8FAFC;
+      color: #0F172A;
+      overflow-x: hidden;
+    }
+
+    /* Subtle automotive carbon/grid texture */
+    .garage-grid-bg {
+      background-image:
+        radial-gradient(circle at 85% 15%, rgba(249, 115, 22, 0.16), transparent 45%),
+        linear-gradient(to right, rgba(148, 163, 184, 0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
+      background-size: 100% 100%, 28px 28px, 28px 28px;
+    }
+
+    .dark-garage-bg {
+      background-color: #0B1120;
+      background-image:
+        radial-gradient(circle at 80% 20%, rgba(249, 115, 22, 0.22), transparent 48%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 100% 100%, 32px 32px, 32px 32px;
+    }
+
+    /* Print styling for clean Invoice export / PDF */
+    @media print {
+      body * {
+        visibility: hidden !important;
+      }
+      #invoicePrintArea, #invoicePrintArea * {
+        visibility: visible !important;
+      }
+      #invoicePrintArea {
+        position: fixed !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 20px !important;
+        background: #FFFFFF !important;
+        color: #0F172A !important;
+        box-shadow: none !important;
+        border: none !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased selection:bg-orange-500 selection:text-white">
+
+  <!-- Toast Notification Banner -->
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-[90] flex flex-col gap-2 max-w-sm w-full px-4 sm:px-0 pointer-events-none"></div>
+
+  <!-- Top Navigation Bar -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20 gap-3">
+
+        <!-- 3 GARAGE Brand Logo (Geometric '3' + Speed Wing + Orange Accent) -->
+        <a href="#beranda" class="flex items-center gap-2.5 sm:gap-3 group shrink-0">
+          <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-center p-1 group-hover:border-orange-500/50 transition">
+            <svg viewBox="0 0 120 100" class="w-full h-full" aria-label="Logo 3 GARAGE">
+              <!-- Three bold slanted speed bars forming '3' -->
+              <polygon points="34,12 52,12 36,54 18,54" fill="#0F172A" />
+              <polygon points="58,12 76,12 60,54 42,54" fill="#0F172A" />
+              <polygon points="82,12 100,12 84,54 66,54" fill="#0F172A" />
+              <!-- Vibrant orange swooping speed arc -->
+              <path d="M52,72 C76,68 95,54 94,32 C105,45 102,68 72,77 Z" fill="#F97316" />
+              <!-- Lower black speed wing/base -->
+              <path d="M12,84 L82,66 C98,62 108,52 109,38 C113,56 104,72 80,79 L12,92 Z" fill="#0F172A" />
+            </svg>
+          </div>
+          <div class="leading-none">
+            <div class="flex items-center gap-1.5">
+              <span id="navBrandName" class="font-display font-extrabold text-lg sm:text-xl tracking-tight text-slate-900">3 GARAGE</span>
+              <span class="hidden md:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-orange-500/15 text-orange-600 border border-orange-500/25">
+                Subaru &amp; Mazda
+              </span>
+            </div>
+            <p id="navBrandSub" class="text-[10px] sm:text-[11px] font-semibold tracking-wider text-slate-500 uppercase mt-0.5">
+              Subaru &amp; Mazda Specialist
+            </p>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden lg:flex items-center gap-7 text-sm font-semibold text-slate-700">
+          <a href="#layanan" class="hover:text-orange-600 transition">Layanan &amp; Pricelist</a>
+          <a href="#keunggulan" class="hover:text-orange-600 transition">Spesialisasi</a>
+          <a href="#galeri" class="hover:text-orange-600 transition">Workshop</a>
+          <a href="#faq" class="hover:text-orange-600 transition">FAQ</a>
+          <a href="#lokasi" class="hover:text-orange-600 transition">Lokasi</a>
+        </nav>
+
+        <!-- Action Buttons: Booking WA + Admin CMS -->
+        <div class="flex items-center gap-2 sm:gap-2.5">
+          <button type="button" onclick="openBookingModal()" class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 active:scale-[0.99] text-white text-xs sm:text-sm font-bold shadow-orange-glow transition cursor-pointer">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <span>Booking WA</span>
+          </button>
+
+          <button type="button" onclick="openAdminModal()" class="inline-flex items-center gap-1.5 px-3 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold border border-slate-700 transition cursor-pointer" title="Kelola Konten, Pricelist &amp; Invoice Google Sheets">
+            <svg class="w-4 h-4 text-orange-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span class="hidden sm:inline">Admin / Invoice</span>
+            <span class="sm:hidden">Admin</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Quick Strip Nav -->
+      <div class="flex lg:hidden items-center gap-4 py-2 overflow-x-auto text-xs font-semibold text-slate-600 border-t border-slate-100">
+        <a href="#layanan" class="whitespace-nowrap hover:text-orange-600">Layanan &amp; Pricelist</a>
+        <a href="#keunggulan" class="whitespace-nowrap hover:text-orange-600">Spesialisasi</a>
+        <a href="#galeri" class="whitespace-nowrap hover:text-orange-600">Workshop</a>
+        <a href="#faq" class="whitespace-nowrap hover:text-orange-600">FAQ</a>
+        <a href="#lokasi" class="whitespace-nowrap hover:text-orange-600">Lokasi</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="beranda" class="garage-grid-bg border-b border-slate-200/80 pt-10 pb-14 sm:pt-16 sm:pb-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+
+        <!-- Left Hero Copy -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex flex-wrap items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900 text-white text-xs font-semibold shadow-sm">
+            <span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
+            <span id="heroBadgeText">Spesialis Boxer Engine, AWD/CVT Subaru &amp; Skyactiv Mazda</span>
+          </div>
+
+          <h1 id="heroTitle" class="font-display text-3xl sm:text-5xl lg:text-[3.35rem] font-extrabold tracking-tight text-slate-900 leading-[1.12]">
+            Perawatan Presisi &amp; Performa Optimal untuk <span class="text-orange-600">Subaru &amp; Mazda</span> Anda.
+          </h1>
+
+          <p id="heroSubtitle" class="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl">
+            3 GARAGE hadir dengan standar diagnosa komputerisasi, suku cadang terkurasi, serta mekanik berpengalaman khusus platform Subaru Boxer &amp; Mazda Skyactiv — lengkap dengan transparansi estimasi biaya, booking cepat, dan layanan konsultasi langsung via WhatsApp.
+          </p>
+
+          <!-- Primary CTA Buttons -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-1">
+            <button type="button" onclick="openConsultModal()" class="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm sm:text-base shadow-lg shadow-emerald-600/25 transition cursor-pointer">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M20.52 3.48A11.82 11.82 0 0012.04 0C5.46 0 .11 5.35.11 11.93c0 2.1.55 4.15 1.6 5.96L0 24l6.29-1.65a11.9 11.9 0 005.75 1.46h.01c6.58 0 11.93-5.35 11.93-11.93 0-3.19-1.24-6.18-3.46-8.4zM12.05 21.8h-.01a9.87 9.87 0 01-5.03-1.38l-.36-.21-3.73.98 1-3.64-.24-.37a9.84 9.84 0 01-1.51-5.24c0-5.45 4.44-9.89 9.9-9.89 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 012.89 7c0 5.45-4.44 9.88-9.9 9.88zm5.42-7.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.21 5.09 4.5.71.31 1.27.49 1.7.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.69.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35z" />
+              </svg>
+              <span>Konsultasi WA</span>
+            </button>
+
+            <button type="button" onclick="openBookingModal()" class="inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-2xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm sm:text-base shadow-orange-glow transition cursor-pointer">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span>Booking Servis WA</span>
+            </button>
+
+            <a href="#layanan" class="inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-2xl bg-white hover:bg-slate-100 text-slate-900 font-bold text-sm sm:text-base border border-slate-300 transition">
+              <span>Lihat Pricelist</span>
+              <svg class="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </a>
+          </div>
+
+          <!-- Quick Trust Metrics -->
+          <div class="grid grid-cols-3 gap-3 sm:gap-6 pt-4 border-t border-slate-200/90 max-w-xl">
+            <div>
+              <p class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900">100%</p>
+              <p class="text-xs sm:text-sm text-slate-500 font-medium">Fokus Subaru &amp; Mazda</p>
+            </div>
+            <div>
+              <p class="font-display text-2xl sm:text-3xl font-extrabold text-orange-600">OBD / Scan</p>
+              <p class="text-xs sm:text-sm text-slate-500 font-medium">Diagnosa Akurat</p>
+            </div>
+            <div>
+              <p class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900">CMS + Sheet</p>
+              <p class="text-xs sm:text-sm text-slate-500 font-medium">Pricelist &amp; Invoice</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Visual Showcase Card -->
+        <div class="lg:col-span-5">
+          <div class="dark-garage-bg rounded-3xl p-6 sm:p-7 text-white shadow-2xl border border-slate-800 relative overflow-hidden">
+            <div class="flex items-center justify-between gap-3 pb-5 border-b border-slate-800">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-white flex items-center justify-center p-1.5 shrink-0">
+                  <svg viewBox="0 0 120 100" class="w-full h-full">
+                    <polygon points="34,12 52,12 36,54 18,54" fill="#0F172A" />
+                    <polygon points="58,12 76,12 60,54 42,54" fill="#0F172A" />
+                    <polygon points="82,12 100,12 84,54 66,54" fill="#0F172A" />
+                    <path d="M52,72 C76,68 95,54 94,32 C105,45 102,68 72,77 Z" fill="#F97316" />
+                    <path d="M12,84 L82,66 C98,62 108,52 109,38 C113,56 104,72 80,79 L12,92 Z" fill="#0F172A" />
+                  </svg>
+                </div>
+                <div>
+                  <p class="text-[11px] font-bold uppercase tracking-widest text-orange-400">Workshop Overview</p>
+                  <h2 id="cardWorkshopName" class="font-display text-xl font-extrabold">3 GARAGE</h2>
+                </div>
+              </div>
+              <span class="px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-xs font-semibold">
+                Buka Layanan
+              </span>
+            </div>
+
+            <div class="space-y-3.5 py-5 text-sm">
+              <div class="flex items-start gap-3 p-3 rounded-2xl bg-slate-900/80 border border-slate-800">
+                <span class="w-8 h-8 rounded-xl bg-orange-500/15 text-orange-400 flex items-center justify-center font-bold shrink-0">SB</span>
+                <div>
+                  <p class="font-bold text-white">Subaru Specialist</p>
+                  <p class="text-xs text-slate-400 mt-0.5">XV, Forester, Impreza, WRX/STI, BRZ, Levorg — Boxer engine, Symmetrical AWD, Lineartronic CVT &amp; kaki-kaki.</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-3 p-3 rounded-2xl bg-slate-900/80 border border-slate-800">
+                <span class="w-8 h-8 rounded-xl bg-orange-500/15 text-orange-400 flex items-center justify-center font-bold shrink-0">MZ</span>
+                <div>
+                  <p class="font-bold text-white">Mazda Specialist</p>
+                  <p class="text-xs text-slate-400 mt-0.5">CX-5, CX-3, CX-30, Mazda3, Mazda6, MX-5 — Skyactiv-G/D, Turbo, i-ACTIV AWD, AT &amp; undercarriage.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Instant Quick WhatsApp Consultation Box inside Hero Card -->
+            <form id="quickWaForm" onsubmit="handleQuickConsult(event)" class="bg-slate-900/95 border border-slate-700/80 rounded-2xl p-4 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase tracking-wider text-orange-400">Tanya Mekanik Cepat</span>
+                <span class="text-[11px] text-slate-400">Langsung ke WhatsApp</span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <input type="text" id="quickCarModel" required placeholder="Model (cth: Forester / CX-5)" class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs sm:text-sm text-white placeholder-slate-400 focus:outline-none focus:border-orange-500" />
+                <input type="text" id="quickIssue" required placeholder="Keluhan / pertanyaan..." class="w-full px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-xs sm:text-sm text-white placeholder-slate-400 focus:outline-none focus:border-orange-500" />
+              </div>
+              <button type="submit" class="w-full py-2.5 px-4 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition cursor-pointer">
+                <span>Kirim Pertanyaan via WhatsApp</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </button>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Specialist Services & Dynamic Pricelist Section -->
+  <section id="layanan" class="py-14 sm:py-20 bg-white border-b border-slate-200/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- Section Header -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-orange-100 text-orange-700 mb-2">
+            Katalog &amp; Estimasi Harga
+          </span>
+          <h2 class="font-display text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+            Layanan &amp; Pricelist Bengkel
+          </h2>
+          <p class="text-slate-600 text-sm sm:text-base mt-1.5 max-w-2xl">
+            Harga estimasi transparan dan dapat diperbarui kapan saja oleh Admin melalui panel CMS tanpa menyentuh file HTML atau JavaScript.
+          </p>
+        </div>
+
+        <!-- Search & Filter Controls -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          <div class="relative">
+            <input type="text" id="pricelistSearch" oninput="renderServices()" placeholder="Cari layanan, oli, CVT, Skyactiv..." class="w-full sm:w-64 pl-9 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-orange-500 focus:bg-white transition" />
+            <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 105 11a6 6 0 0012 0z" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div id="categoryTabs" class="flex items-center gap-2 overflow-x-auto pb-3 mb-7">
+        <button type="button" data-cat="ALL" onclick="setCategoryFilter('ALL')" class="cat-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap cursor-pointer bg-slate-900 text-white shadow-sm">
+          Semua Layanan
+        </button>
+        <button type="button" data-cat="Subaru" onclick="setCategoryFilter('Subaru')" class="cat-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap cursor-pointer bg-slate-100 text-slate-700 hover:bg-slate-200">
+          Subaru
+        </button>
+        <button type="button" data-cat="Mazda" onclick="setCategoryFilter('Mazda')" class="cat-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap cursor-pointer bg-slate-100 text-slate-700 hover:bg-slate-200">
+          Mazda
+        </button>
+        <button type="button" data-cat="Paket" onclick="setCategoryFilter('Paket')" class="cat-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap cursor-pointer bg-slate-100 text-slate-700 hover:bg-slate-200">
+          Paket Servis
+        </button>
+        <button type="button" data-cat="General" onclick="setCategoryFilter('General')" class="cat-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap cursor-pointer bg-slate-100 text-slate-700 hover:bg-slate-200">
+          General &amp; Kaki-Kaki
+        </button>
+      </div>
+
+      <!-- Services Grid (Populated dynamically by JS) -->
+      <div id="servicesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+
+      <!-- Empty State when no filter matches -->
+      <div id="servicesEmpty" class="hidden text-center py-12 px-4 rounded-2xl bg-slate-50 border border-dashed border-slate-300 mt-4">
+        <p class="font-bold text-slate-800">Tidak ada layanan yang cocok dengan filter/pencarian.</p>
+        <p class="text-sm text-slate-500 mt-1">Coba kata kunci lain atau pilih kategori "Semua Layanan".</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Specialist Strengths / Keunggulan Section -->
+  <section id="keunggulan" class="py-14 sm:py-20 bg-slate-50 border-b border-slate-200/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-2xl mb-10">
+        <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-900 text-orange-400 mb-2">
+          Mengapa 3 GARAGE
+        </span>
+        <h2 class="font-display text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+          Standar Bengkel Spesialis Subaru &amp; Mazda
+        </h2>
+        <p class="text-slate-600 text-sm sm:text-base mt-2">
+          Karakter mesin Boxer dan teknologi Skyactiv membutuhkan pendekatan teknis yang tepat agar performa, efisiensi, dan keawetan komponen tetap terjaga.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div class="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-garage">
+          <div class="w-11 h-11 rounded-xl bg-orange-500/15 text-orange-600 flex items-center justify-center font-extrabold text-lg mb-4">01</div>
+          <h3 class="font-display font-bold text-lg text-slate-900 mb-1.5">Diagnosa Terarah</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Pengecekan menyeluruh sensor, sistem pengapian, transmisi, serta keluhan getaran/bunyi sebelum penggantian part dilakukan.
+          </p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-garage">
+          <div class="w-11 h-11 rounded-xl bg-orange-500/15 text-orange-600 flex items-center justify-center font-extrabold text-lg mb-4">02</div>
+          <h3 class="font-display font-bold text-lg text-slate-900 mb-1.5">Paham Karakter Platform</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Penanganan khusus untuk Boxer engine, AWD &amp; CVT Subaru serta Skyactiv, i-Stop, dan suspensi presisi Mazda.
+          </p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-garage">
+          <div class="w-11 h-11 rounded-xl bg-orange-500/15 text-orange-600 flex items-center justify-center font-extrabold text-lg mb-4">03</div>
+          <h3 class="font-display font-bold text-lg text-slate-900 mb-1.5">Booking &amp; Konsultasi WA</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Atur jadwal servis dan konsultasi keluhan mobil langsung ke WhatsApp admin tanpa antre tebak-tebakan.
+          </p>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-garage">
+          <div class="w-11 h-11 rounded-xl bg-orange-500/15 text-orange-600 flex items-center justify-center font-extrabold text-lg mb-4">04</div>
+          <h3 class="font-display font-bold text-lg text-slate-900 mb-1.5">Pricelist &amp; Invoice Jelas</h3>
+          <p class="text-sm text-slate-600 leading-relaxed">
+            Estimasi biaya terstruktur dan pembuatan invoice yang mudah dicetak atau direkap ke Google Sheets.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Workshop Highlights / Gallery Section -->
+  <section id="galeri" class="py-14 sm:py-20 bg-white border-b border-slate-200/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+        <div>
+          <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-orange-100 text-orange-700 mb-2">
+            Area Pengerjaan
+          </span>
+          <h2 class="font-display text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+            Highlight Workshop 3 GARAGE
+          </h2>
+        </div>
+        <button type="button" onclick="openConsultModal()" class="inline-flex items-center gap-2 text-sm font-bold text-orange-600 hover:text-orange-700 cursor-pointer">
+          <span>Konsultasi pengerjaan mobil Anda</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Card 1 -->
+        <div class="group rounded-2xl overflow-hidden border border-slate-200 bg-slate-900 text-white shadow-garage">
+          <div class="h-48 dark-garage-bg p-6 flex flex-col justify-between relative">
+            <span class="self-start px-3 py-1 rounded-full bg-orange-500 text-white text-xs font-bold">Boxer &amp; AWD Bay</span>
+            <div class="flex items-end justify-between">
+              <div>
+                <p class="text-xs text-slate-400">Subaru Platform</p>
+                <h3 class="font-display text-xl font-extrabold">Engine &amp; Drivetrain</h3>
+              </div>
+              <svg class="w-12 h-12 text-orange-500/80" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </div>
+          </div>
+          <div class="p-5 bg-white text-slate-700 text-sm">
+            Ganti oli mesin &amp; gardan/CVT, pengecekan kebocoran seal, busi, koil, hingga tune-up berkala Subaru XV, Forester, Impreza &amp; Levorg.
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="group rounded-2xl overflow-hidden border border-slate-200 bg-slate-900 text-white shadow-garage">
+          <div class="h-48 dark-garage-bg p-6 flex flex-col justify-between relative">
+            <span class="self-start px-3 py-1 rounded-full bg-orange-500 text-white text-xs font-bold">Skyactiv Bay</span>
+            <div class="flex items-end justify-between">
+              <div>
+                <p class="text-xs text-slate-400">Mazda Platform</p>
+                <h3 class="font-display text-xl font-extrabold">Tune-Up &amp; Diagnostics</h3>
+              </div>
+              <svg class="w-12 h-12 text-orange-500/80" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+            </div>
+          </div>
+          <div class="p-5 bg-white text-slate-700 text-sm">
+            Perawatan berkala Mazda CX-5, CX-3, CX-30, Mazda3 &amp; Mazda6: pembersihan throttle/intake, rem, transmisi otomatis, dan scan error kode.
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="group rounded-2xl overflow-hidden border border-slate-200 bg-slate-900 text-white shadow-garage">
+          <div class="h-48 dark-garage-bg p-6 flex flex-col justify-between relative">
+            <span class="self-start px-3 py-1 rounded-full bg-orange-500 text-white text-xs font-bold">Chassis &amp; Handling</span>
+            <div class="flex items-end justify-between">
+              <div>
+                <p class="text-xs text-slate-400">Suspension &amp; Brakes</p>
+                <h3 class="font-display text-xl font-extrabold">Kaki-Kaki &amp; Pengereman</h3>
+              </div>
+              <svg class="w-12 h-12 text-orange-500/80" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+          </div>
+          <div class="p-5 bg-white text-slate-700 text-sm">
+            Perbaikan shock absorber, bushing arm, link stabilizer, bearing roda, kampas &amp; rotor rem agar stabilitas berkendara tetap mantap.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" class="py-14 sm:py-20 bg-slate-50 border-b border-slate-200/80">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10">
+        <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-orange-100 text-orange-700 mb-2">
+          Pertanyaan Umum
+        </span>
+        <h2 class="font-display text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+          FAQ 3 GARAGE
+        </h2>
+      </div>
+
+      <div class="space-y-3.5" id="faqAccordion">
+        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+          <button type="button" onclick="toggleFaq(this)" class="w-full px-5 py-4 text-left flex items-center justify-between gap-4 font-bold text-slate-900 text-sm sm:text-base cursor-pointer">
+            <span>Apakah 3 GARAGE hanya melayani Subaru dan Mazda saja?</span>
+            <span class="faq-icon text-orange-600 text-xl leading-none font-bold">+</span>
+          </button>
+          <div class="faq-content hidden px-5 pb-4 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+            Spesialisasi utama kami berada pada lini kendaraan Subaru dan Mazda (baik mesin NA maupun turbo, AWD, CVT/AT, serta kaki-kaki). Untuk pengecekan umum atau konsultasi unit tertentu, silakan hubungi kami via WhatsApp terlebih dahulu.
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+          <button type="button" onclick="toggleFaq(this)" class="w-full px-5 py-4 text-left flex items-center justify-between gap-4 font-bold text-slate-900 text-sm sm:text-base cursor-pointer">
+            <span>Bagaimana cara booking servis atau konsultasi keluhan?</span>
+            <span class="faq-icon text-orange-600 text-xl leading-none font-bold">+</span>
+          </button>
+          <div class="faq-content hidden px-5 pb-4 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+            Klik tombol <strong>Konsultasi WA</strong> atau <strong>Booking Servis WA</strong>, isi data kendaraan serta keluhan atau jadwal yang diinginkan, lalu sistem akan menyusun pesan otomatis dan membukanya ke WhatsApp bengkel.
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+          <button type="button" onclick="toggleFaq(this)" class="w-full px-5 py-4 text-left flex items-center justify-between gap-4 font-bold text-slate-900 text-sm sm:text-base cursor-pointer">
+            <span>Bagaimana Admin mengupdate pricelist dan membuat invoice Google Sheets?</span>
+            <span class="faq-icon text-orange-600 text-xl leading-none font-bold">+</span>
+          </button>
+          <div class="faq-content hidden px-5 pb-4 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+            Klik tombol <strong>Admin / Invoice</strong> di header (PIN default: <code class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-900 font-semibold">3garage</code>). Di dalamnya Anda bisa menambah/mengedit/menghapus layanan &amp; harga tanpa edit kode, export/import <code class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-900 font-semibold">content.json</code> untuk GitHub, serta merakit invoice untuk dicetak atau dikirim/disalin ke Google Sheets.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Location & Contact Footer -->
+  <footer id="lokasi" class="dark-garage-bg text-white pt-14 pb-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pb-10 border-b border-slate-800">
+
+        <!-- Brand & Summary -->
+        <div class="space-y-3">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-xl bg-white p-1.5 flex items-center justify-center shrink-0">
+              <svg viewBox="0 0 120 100" class="w-full h-full">
+                <polygon points="34,12 52,12 36,54 18,54" fill="#0F172A" />
+                <polygon points="58,12 76,12 60,54 42,54" fill="#0F172A" />
+                <polygon points="82,12 100,12 84,54 66,54" fill="#0F172A" />
+                <path d="M52,72 C76,68 95,54 94,32 C105,45 102,68 72,77 Z" fill="#F97316" />
+                <path d="M12,84 L82,66 C98,62 108,52 109,38 C113,56 104,72 80,79 L12,92 Z" fill="#0F172A" />
+              </svg>
+            </div>
+            <div>
+              <h3 id="footerBrandName" class="font-display text-lg font-extrabold">3 GARAGE</h3>
+              <p class="text-xs text-orange-400 font-semibold">SUBARU &amp; MAZDA SPECIALIST</p>
+            </div>
+          </div>
+          <p id="footerDescription" class="text-sm text-slate-400 leading-relaxed">
+            Bengkel spesialis perawatan, diagnosa, dan perbaikan Subaru &amp; Mazda dengan layanan cepat via WhatsApp.
+          </p>
+        </div>
+
+        <!-- Address & Hours -->
+        <div class="space-y-2.5 text-sm">
+          <h4 class="font-display font-bold text-white uppercase tracking-wider text-xs text-orange-400">Alamat &amp; Jam Operasional</h4>
+          <p id="footerAddress" class="text-slate-300 leading-relaxed">
+            Jl. Otomotif Spesialis No. 3, Kawasan Bengkel — Indonesia
+          </p>
+          <p id="footerHours" class="text-slate-400">
+            Senin – Sabtu: 08.30 – 17.30 WIB • Minggu &amp; Hari Besar: By Appointment
+          </p>
+          <p class="text-slate-300">
+            WhatsApp: <span id="footerWaDisplay" class="font-bold text-orange-400">+62 812-3456-7890</span>
+          </p>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="space-y-3">
+          <h4 class="font-display font-bold text-white uppercase tracking-wider text-xs text-orange-400">Akses Cepat</h4>
+          <div class="flex flex-wrap gap-2.5">
+            <button type="button" onclick="openConsultModal()" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition cursor-pointer">
+              Konsultasi WA
+            </button>
+            <button type="button" onclick="openBookingModal()" class="px-4 py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold transition cursor-pointer">
+              Booking Servis WA
+            </button>
+            <button type="button" onclick="openAdminModal()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold border border-slate-700 transition cursor-pointer">
+              Admin CMS &amp; Invoice
+            </button>
+          </div>
+          <p class="text-xs text-slate-500">
+            Repo target: <span class="text-slate-400">kurniawan-arry/bengkel-3garage</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Modular File Inspector & GitHub Push Structure Section -->
+      <section id="struktur-file" class="mt-10 pt-8 border-t border-slate-800 space-y-5">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-3">
+          <div>
+            <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-orange-500/20 text-orange-400 mb-1.5">
+              GitHub Repository Blueprint • kurniawan-arry/bengkel-3garage
+            </span>
+            <h3 class="font-display text-xl sm:text-2xl font-extrabold text-white">
+              Struktur File Modular &amp; Source Inspector
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1">
+              Terdiri dari <code class="text-orange-300">index.html</code>, folder <code class="text-orange-300">assets/</code>, <code class="text-orange-300">data.js</code>, <code class="text-orange-300">pricelist.js</code>, dan <code class="text-orange-300">workshop.js</code>.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <button type="button" onclick="copyActiveInspectorFile()" class="px-3.5 py-2 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold transition cursor-pointer">
+              Salin File Aktif
+            </button>
+          </div>
+        </div>
+
+        <!-- File Tabs -->
+        <div id="fileInspectorTabs" class="flex items-center gap-2 overflow-x-auto pb-1">
+          <button type="button" data-filetab="assets/README.md" onclick="switchInspectorTab('assets/README.md')" class="file-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-orange-500 text-white whitespace-nowrap cursor-pointer">
+            assets/ (Panduan &amp; Logo)
+          </button>
+          <button type="button" data-filetab="data.js" onclick="switchInspectorTab('data.js')" class="file-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 whitespace-nowrap cursor-pointer">
+            data.js
+          </button>
+          <button type="button" data-filetab="pricelist.js" onclick="switchInspectorTab('pricelist.js')" class="file-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 whitespace-nowrap cursor-pointer">
+            pricelist.js
+          </button>
+          <button type="button" data-filetab="workshop.js" onclick="switchInspectorTab('workshop.js')" class="file-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 whitespace-nowrap cursor-pointer">
+            workshop.js
+          </button>
+          <button type="button" data-filetab="index.html" onclick="switchInspectorTab('index.html')" class="file-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 whitespace-nowrap cursor-pointer">
+            index.html
+          </button>
+        </div>
+
+        <!-- Inspector Output Box -->
+        <div class="rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden">
+          <div class="px-4 py-2.5 bg-slate-900 border-b border-slate-800 flex items-center justify-between text-xs">
+            <span id="inspectorFilePath" class="font-mono font-bold text-orange-400">assets/README.md</span>
+            <span id="inspectorFileDesc" class="text-slate-400 hidden sm:inline">Panduan penempatan aset visual &amp; logo 3 GARAGE</span>
+          </div>
+          <pre id="inspectorCodeBlock" class="p-4 text-xs font-mono text-emerald-300 overflow-x-auto max-h-80 leading-relaxed"></pre>
+        </div>
+      </section>
+
+      <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+        <p>© <span id="currentYear">2026</span> <span id="copyrightBrand">3 GARAGE — Subaru &amp; Mazda Specialist</span>. All rights reserved.</p>
+        <p>Static Web App • CMS Content + Pricelist + Google Sheets Invoice Ready</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 1: WHATSAPP CONSULTATION                                        -->
+  <!-- ===================================================================== -->
+  <div id="consultModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/70 backdrop-blur-xs p-4 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden my-auto">
+      <div class="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+          <h3 class="font-display font-bold text-lg">Konsultasi WhatsApp</h3>
+        </div>
+        <button type="button" onclick="closeModal('consultModal')" class="text-slate-400 hover:text-white text-xl font-bold px-2 cursor-pointer">&times;</button>
+      </div>
+
+      <form onsubmit="submitConsultForm(event)" class="p-6 space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Nama Anda *</label>
+          <input type="text" id="consultName" required placeholder="Contoh: Budi Santoso" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-orange-500" />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Model Subaru / Mazda *</label>
+            <input type="text" id="consultCar" required placeholder="Contoh: Subaru XV 2.0i / Mazda CX-5" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-orange-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Tahun / No. Plat</label>
+            <input type="text" id="consultPlate" placeholder="Contoh: 2019 / B 1234 XYZ" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-orange-500" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Keluhan / Pertanyaan *</label>
+          <textarea id="consultNotes" rows="3" required placeholder="Ceritakan gejala bunyi, getaran, indikator dashboard, atau estimasi servis yang ingin ditanyakan..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-orange-500"></textarea>
+        </div>
+
+        <div class="flex items-center justify-end gap-2.5 pt-2">
+          <button type="button" onclick="closeModal('consultModal')" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-bold cursor-pointer">
+            Batal
+          </button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold shadow-md transition cursor-pointer">
+            Buka WhatsApp Konsultasi
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 2: WHATSAPP BOOKING                                             -->
+  <!-- ===================================================================== -->
+  <div id="bookingModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/70 backdrop-blur-xs p-4 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-xl w-full shadow-2xl border border-slate-200 overflow-hidden my-auto">
+      <div class="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span>
+          <h3 class="font-display font-bold text-lg">Booking Servis via WhatsApp</h3>
+        </div>
+        <button type="button" onclick="closeModal('bookingModal')" class="text-slate-400 hover:text-white text-xl font-bold px-2 cursor-pointer">&times;</button>
+      </div>
+
+      <form onsubmit="submitBookingForm(event)" class="p-6 space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Nama Pelanggan *</label>
+            <input type="text" id="bookingName" required placeholder="Nama lengkap" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-orange-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">No. HP / WA *</label>
+            <input type="tel" id="bookingPhone" required placeholder="08xxxxxxxxxx" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-orange-500" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Model Mobil (Subaru/Mazda) *</label>
+            <input type="text" id="bookingCar" required placeholder="Contoh: Forester XT / Mazda3 Skyactiv" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-orange-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Nomor Plat *</label>
+            <input type="text" id="bookingPlate" required placeholder="Contoh: B 8821 TGR" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-orange-500" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Layanan / Pricelist Dipilih *</label>
+          <select id="bookingServiceSelect" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm bg-white focus:outline-none focus:border-orange-500"></select>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Tanggal Booking *</label>
+            <input type="date" id="bookingDate" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-orange-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Perkiraan Jam *</label>
+            <select id="bookingTime" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm bg-white focus:outline-none focus:border-orange-500">
+              <option value="09:00 WIB">09:00 WIB</option>
+              <option value="10:30 WIB">10:30 WIB</option>
+              <option value="13:00 WIB">13:00 WIB</option>
+              <option value="14:30 WIB">14:30 WIB</option>
+              <option value="16:00 WIB">16:00 WIB</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">Catatan Tambahan</label>
+          <textarea id="bookingNotes" rows="2" placeholder="Keluhan tambahan atau permintaan khusus..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-orange-500"></textarea>
+        </div>
+
+        <div class="flex items-center justify-end gap-2.5 pt-2">
+          <button type="button" onclick="closeModal('bookingModal')" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-bold cursor-pointer">
+            Batal
+          </button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-sm font-bold shadow-orange-glow transition cursor-pointer">
+            Kirim Booking ke WhatsApp
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 3: ADMIN CMS, PRICELIST BUILDER & GOOGLE SHEETS INVOICE         -->
+  <!-- ===================================================================== -->
+  <div id="adminModal" class="fixed inset-0 z-50 hidden items-start justify-center bg-slate-950/75 backdrop-blur-xs p-3 sm:p-6 overflow-y-auto">
+    <div class="bg-slate-50 rounded-3xl max-w-6xl w-full shadow-2xl border border-slate-200 overflow-hidden my-auto">
+
+      <!-- Admin Header -->
+      <div class="px-5 sm:px-7 py-4 bg-slate-900 text-white flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <span class="w-9 h-9 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center font-extrabold">3G</span>
+          <div>
+            <h3 class="font-display font-bold text-base sm:text-lg">3 GARAGE Admin Console</h3>
+            <p class="text-[11px] text-slate-400">Kelola Konten &amp; Pricelist • GitHub JSON Sync • Pricelist Builder &amp; Google Sheets Invoice</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button type="button" id="lockAdminBtn" onclick="lockAdminSession()" class="hidden px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300 border border-slate-700 cursor-pointer">
+            Kunci PIN
+          </button>
+          <button type="button" onclick="closeModal('adminModal')" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-red-600 text-xs font-bold text-white transition cursor-pointer">
+            Tutup &times;
+          </button>
+        </div>
+      </div>
+
+      <!-- PIN Gate Screen -->
+      <div id="adminPinGate" class="p-6 sm:p-10 max-w-md mx-auto text-center space-y-4">
+        <div class="w-14 h-14 rounded-2xl bg-orange-500/15 text-orange-600 flex items-center justify-center mx-auto font-display font-extrabold text-xl">
+          PIN
+        </div>
+        <h4 class="font-display font-extrabold text-xl text-slate-900">Akses Admin Bengkel</h4>
+        <p class="text-sm text-slate-600">
+          Masukkan PIN Admin untuk mengubah konten, pricelist, dan membuat invoice Google Sheets. PIN default: <strong class="text-slate-900">3garage</strong>.
+        </p>
+        <form onsubmit="verifyAdminPin(event)" class="space-y-3 pt-1">
+          <input type="password" id="adminPinInput" required placeholder="Masukkan PIN (default: 3garage)" class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white text-center text-sm font-semibold tracking-wider focus:outline-none focus:border-orange-500" />
+          <button type="submit" class="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm transition cursor-pointer">
+            Masuk ke Admin Panel
+          </button>
+        </form>
+      </div>
+
+      <!-- Authenticated Admin Workspace -->
+      <div id="adminWorkspace" class="hidden p-4 sm:p-6 space-y-5">
+
+        <!-- Admin Navigation Tabs -->
+        <div class="flex flex-wrap items-center gap-2 border-b border-slate-200 pb-3">
+          <button type="button" data-admintab="services" onclick="switchAdminTab('services')" class="admin-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-orange-500 text-white cursor-pointer">
+            1. Layanan &amp; Pricelist CMS
+          </button>
+          <button type="button" data-admintab="workshop" onclick="switchAdminTab('workshop')" class="admin-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 cursor-pointer">
+            2. Profil Bengkel &amp; WA
+          </button>
+          <button type="button" data-admintab="invoice" onclick="switchAdminTab('invoice')" class="admin-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 cursor-pointer">
+            3. Invoice &amp; Google Sheets
+          </button>
+          <button type="button" data-admintab="github" onclick="switchAdminTab('github')" class="admin-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 cursor-pointer">
+            4. Export / Import JSON (GitHub)
+          </button>
+        </div>
+
+        <!-- TAB 1: SERVICES & PRICELIST CMS -->
+        <div id="adminTab-services" class="admin-panel space-y-5">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+
+            <!-- Add / Edit Service Form -->
+            <div class="lg:col-span-5 bg-white rounded-2xl p-5 border border-slate-200 shadow-xs h-fit">
+              <div class="flex items-center justify-between mb-3">
+                <h4 id="serviceFormTitle" class="font-display font-bold text-base text-slate-900">Tambah Item Layanan / Pricelist</h4>
+                <button type="button" onclick="resetServiceForm()" class="text-xs font-semibold text-orange-600 hover:underline cursor-pointer">Reset Form</button>
+              </div>
+
+              <form onsubmit="saveServiceItem(event)" class="space-y-3">
+                <input type="hidden" id="editServiceId" />
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Kategori *</label>
+                    <select id="srvCategory" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm bg-white">
+                      <option value="Subaru">Subaru</option>
+                      <option value="Mazda">Mazda</option>
+                      <option value="Paket">Paket</option>
+                      <option value="General">General</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">Estimasi Durasi</label>
+                    <input type="text" id="srvDuration" placeholder="Cth: 60 - 90 Menit" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm" />
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-600 mb-1">Nama Layanan / Paket *</label>
+                  <input type="text" id="srvTitle" required placeholder="Cth: Service Berkala Boxer + Oli Motul" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm" />
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-600 mb-1">Harga / Estimasi (Angka Rupiah) *</label>
+                  <input type="number" id="srvPrice" required min="0" step="1000" placeholder="Cth: 950000" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm" />
+                  <p class="text-[11px] text-slate-400 mt-0.5">Dipakai otomatis sebagai harga dasar di Pricelist &amp; Invoice Builder.</p>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-bold text-slate-600 mb-1">Deskripsi Singkat *</label>
+                  <textarea id="srvDesc" rows="2" required placeholder="Detail pekerjaan, komponen, atau catatan model..." class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm"></textarea>
+                </div>
+
+                <button type="submit" class="w-full py-2.5 px-4 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm transition cursor-pointer">
+                  Simpan ke Pricelist
+                </button>
+              </form>
+            </div>
+
+            <!-- Existing Items List with Reorder / Edit / Delete -->
+            <div class="lg:col-span-7 bg-white rounded-2xl p-5 border border-slate-200 shadow-xs">
+              <div class="flex items-center justify-between mb-3">
+                <h4 class="font-display font-bold text-base text-slate-900">Daftar Pricelist Aktif (<span id="adminServiceCount">0</span>)</h4>
+                <button type="button" onclick="restoreDefaultData()" class="text-xs font-semibold text-slate-500 hover:text-red-600 cursor-pointer">
+                  Pulihkan Data Bawaan
+                </button>
+              </div>
+
+              <div id="adminServicesList" class="space-y-2.5 max-h-[460px] overflow-y-auto pr-1"></div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- TAB 2: WORKSHOP PROFILE & WA SETTINGS -->
+        <div id="adminTab-workshop" class="admin-panel hidden">
+          <form onsubmit="saveWorkshopSettings(event)" class="bg-white rounded-2xl p-6 border border-slate-200 max-w-3xl space-y-4">
+            <h4 class="font-display font-bold text-lg text-slate-900">Pengaturan Profil 3 GARAGE &amp; WhatsApp</h4>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">Nama Bengkel *</label>
+                <input type="text" id="cfgBrandName" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">Nomor WhatsApp (Format Internasional, cth: 6281234567890) *</label>
+                <input type="text" id="cfgWaNumber" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Badge Hero</label>
+              <input type="text" id="cfgHeroBadge" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Headline Utama Hero *</label>
+              <input type="text" id="cfgHeroTitle" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">Subheadline / Deskripsi Hero *</label>
+              <textarea id="cfgHeroSubtitle" rows="2" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm"></textarea>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">Alamat Bengkel</label>
+                <input type="text" id="cfgAddress" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">Jam Operasional</label>
+                <input type="text" id="cfgHours" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-600 mb-1">PIN Admin Baru (Kosongkan jika tetap)</label>
+              <input type="text" id="cfgNewPin" placeholder="Biarkan kosong untuk mempertahankan PIN saat ini" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
+            </div>
+
+            <div class="pt-2">
+              <button type="submit" class="px-6 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm transition cursor-pointer">
+                Simpan Pengaturan Bengkel
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- TAB 3: PRICELIST BUILDER & GOOGLE SHEETS INVOICE -->
+        <div id="adminTab-invoice" class="admin-panel hidden space-y-6">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+            <!-- Left: Invoice & Pricelist Quote Builder -->
+            <div class="lg:col-span-7 bg-white rounded-2xl p-5 border border-slate-200 space-y-4">
+              <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
+                <div>
+                  <h4 class="font-display font-bold text-base text-slate-900">Pricelist &amp; Invoice Builder</h4>
+                  <p class="text-xs text-slate-500">Pilih item dari pricelist atau tambah item custom, lalu generate invoice.</p>
+                </div>
+                <button type="button" onclick="generateNewInvoiceNumber()" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-xs font-bold text-slate-700 cursor-pointer">
+                  No. Invoice Baru
+                </button>
+              </div>
+
+              <!-- Customer & Vehicle Info -->
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-600 mb-1">No. Invoice</label>
+                  <input type="text" id="invNumber" oninput="updateInvoicePreview()" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold" />
+                </div>
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-600 mb-1">Tanggal</label>
+                  <input type="date" id="invDate" oninput="updateInvoicePreview()" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs" />
+                </div>
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-600 mb-1">Nama Pelanggan</label>
+                  <input type="text" id="invCustomer" oninput="updateInvoicePreview()" placeholder="Nama customer" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs" />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-600 mb-1">No. WA Pelanggan</label>
+                  <input type="text" id="invPhone" oninput="updateInvoicePreview()" placeholder="08..." class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs" />
+                </div>
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-600 mb-1">Kendaraan (Subaru/Mazda)</label>
+                  <input type="text" id="invCar" oninput="updateInvoicePreview()" placeholder="Cth: Mazda CX-5 2020" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs" />
+                </div>
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-600 mb-1">No. Plat</label>
+                  <input type="text" id="invPlate" oninput="updateInvoicePreview()" placeholder="Cth: B 1920 3G" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs" />
+                </div>
+              </div>
+
+              <!-- Quick Add From Pricelist -->
+              <div class="p-3 rounded-xl bg-orange-50/70 border border-orange-200/80 flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                <select id="invPricelistPicker" class="flex-1 px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-medium"></select>
+                <button type="button" onclick="addPricelistItemToInvoice()" class="px-4 py-2 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold whitespace-nowrap cursor-pointer">
+                  + Masukkan dari Pricelist
+                </button>
+              </div>
+
+              <!-- Line Items Table -->
+              <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                <table class="w-full text-left border-collapse text-xs">
+                  <thead class="bg-slate-100 text-slate-700 font-bold">
+                    <tr>
+                      <th class="p-2.5">Item / Jasa</th>
+                      <th class="p-2.5 w-20">Qty</th>
+                      <th class="p-2.5 w-32">Harga (Rp)</th>
+                      <th class="p-2.5 w-28 text-right">Subtotal</th>
+                      <th class="p-2.5 w-10"></th>
+                    </tr>
+                  </thead>
+                  <tbody id="invoiceItemsBody" class="divide-y divide-slate-100"></tbody>
+                </table>
+              </div>
+
+              <button type="button" onclick="addCustomInvoiceRow()" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold cursor-pointer">
+                + Tambah Baris Item Custom
+              </button>
+
+              <!-- Discount & Notes -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-600 mb-1">Diskon (Rp)</label>
+                  <input type="number" id="invDiscount" value="0" min="0" step="1000" oninput="updateInvoicePreview()" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs" />
+                </div>
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-600 mb-1">Catatan Invoice</label>
+                  <input type="text" id="invNotes" oninput="updateInvoicePreview()" placeholder="Cth: Garansi pengerjaan 14 hari / DP 50%" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Live Printable Invoice + Google Sheets Export / Webhook -->
+            <div class="lg:col-span-5 space-y-4">
+
+              <!-- Printable Invoice Preview -->
+              <div id="invoicePrintArea" class="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs space-y-4">
+                <div class="flex items-start justify-between border-b border-slate-200 pb-3">
+                  <div>
+                    <p class="text-[10px] font-extrabold uppercase tracking-widest text-orange-600">INVOICE SERVIS &amp; PRICELIST</p>
+                    <h5 id="prevBrandTitle" class="font-display font-extrabold text-lg text-slate-900">3 GARAGE</h5>
+                    <p class="text-[11px] text-slate-500">Subaru &amp; Mazda Specialist</p>
+                  </div>
+                  <div class="text-right text-xs">
+                    <p class="font-bold text-slate-900" id="prevInvNumber">INV-3G-001</p>
+                    <p class="text-slate-500" id="prevInvDate">-</p>
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2 text-xs bg-slate-50 p-3 rounded-xl">
+                  <div>
+                    <p class="text-[10px] uppercase font-bold text-slate-400">Pelanggan</p>
+                    <p class="font-bold text-slate-800" id="prevCustomer">-</p>
+                    <p class="text-slate-500" id="prevPhone">-</p>
+                  </div>
+                  <div>
+                    <p class="text-[10px] uppercase font-bold text-slate-400">Unit Kendaraan</p>
+                    <p class="font-bold text-slate-800" id="prevCar">-</p>
+                    <p class="text-slate-500" id="prevPlate">-</p>
+                  </div>
+                </div>
+
+                <div id="prevItemsList" class="space-y-1.5 text-xs border-b border-slate-200 pb-3"></div>
+
+                <div class="space-y-1 text-xs">
+                  <div class="flex justify-between text-slate-600">
+                    <span>Subtotal</span>
+                    <span id="prevSubtotal" class="font-semibold">Rp 0</span>
+                  </div>
+                  <div class="flex justify-between text-slate-600">
+                    <span>Diskon</span>
+                    <span id="prevDiscount" class="font-semibold text-emerald-600">- Rp 0</span>
+                  </div>
+                  <div class="flex justify-between text-sm font-extrabold text-slate-900 pt-1.5 border-t border-slate-200">
+                    <span>TOTAL TAGIHAN</span>
+                    <span id="prevTotal" class="text-orange-600">Rp 0</span>
+                  </div>
+                </div>
+
+                <p id="prevNotes" class="text-[11px] text-slate-500 italic"></p>
+              </div>
+
+              <!-- Export & Google Sheets Actions -->
+              <div class="no-print bg-white rounded-2xl p-4 border border-slate-200 space-y-3">
+                <h5 class="font-display font-bold text-sm text-slate-900">Export &amp; Kirim ke Google Sheets</h5>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <button type="button" onclick="copyInvoiceTSV()" class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold cursor-pointer">
+                    Copy Kolom untuk Sheet (TSV)
+                  </button>
+                  <button type="button" onclick="downloadInvoiceCSV()" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold cursor-pointer">
+                    Download CSV (Google Sheet)
+                  </button>
+                </div>
+
+                <button type="button" onclick="window.print()" class="w-full px-3 py-2 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold cursor-pointer">
+                  Cetak / Simpan PDF Invoice
+                </button>
+
+                <!-- Optional Google Apps Script Webhook URL -->
+                <div class="pt-2 border-t border-slate-100 space-y-2">
+                  <label class="block text-[11px] font-bold text-slate-600">Google Apps Script Web App URL (Opsional)</label>
+                  <div class="flex gap-2">
+                    <input type="url" id="gsWebAppUrl" oninput="saveGsUrl()" placeholder="https://script.google.com/macros/s/.../exec" class="flex-1 px-3 py-2 rounded-xl border border-slate-300 text-xs" />
+                    <button type="button" onclick="sendInvoiceToGoogleSheet()" class="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold whitespace-nowrap cursor-pointer">
+                      Kirim ke Sheet
+                    </button>
+                  </div>
+                  <button type="button" onclick="toggleAppsScriptGuide()" class="text-[11px] font-semibold text-indigo-600 hover:underline cursor-pointer">
+                    Lihat kode Google Apps Script (doPost) &amp; panduan setup
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Collapsible Google Apps Script Helper Box -->
+          <div id="appsScriptGuideBox" class="no-print hidden bg-slate-900 text-slate-200 rounded-2xl p-5 border border-slate-800 space-y-3">
+            <div class="flex items-center justify-between">
+              <h5 class="font-display font-bold text-sm text-orange-400">Kode Google Apps Script untuk Menerima Invoice Otomatis</h5>
+              <button type="button" onclick="copyAppsScriptCode()" class="px-3 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-bold text-white cursor-pointer">
+                Salin Script
+              </button>
+            </div>
+            <p class="text-xs text-slate-400">
+              Buka Google Sheet Anda &rarr; <strong>Extensions &rarr; Apps Script</strong> &rarr; tempel kode di bawah &rarr; <strong>Deploy &rarr; New deployment &rarr; Web app</strong> (Execute as: Me, Who has access: Anyone), lalu paste URL-nya ke kolom di atas.
+            </p>
+            <pre id="appsScriptCode" class="bg-slate-950 p-3.5 rounded-xl text-[11px] text-emerald-300 overflow-x-auto leading-relaxed">function doPost(e) {
+  try {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Invoices") || SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var data = JSON.parse(e.postData.contents);
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow(["Timestamp", "No Invoice", "Tanggal", "Pelanggan", "No WA", "Kendaraan", "No Plat", "Items", "Subtotal", "Diskon", "Total", "Catatan"]);
+    }
+    sheet.appendRow([
+      new Date(),
+      data.invNumber || "",
+      data.invDate || "",
+      data.customer || "",
+      data.phone || "",
+      data.car || "",
+      data.plate || "",
+      data.itemsSummary || "",
+      data.subtotal || 0,
+      data.discount || 0,
+      data.total || 0,
+      data.notes || ""
+    ]);
+    return ContentService.createTextOutput(JSON.stringify({ status: "success" }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ status: "error", message: err.message }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}</pre>
+          </div>
+        </div>
+
+        <!-- TAB 4: EXPORT / IMPORT JSON FOR GITHUB PAGES -->
+        <div id="adminTab-github" class="admin-panel hidden space-y-4">
+          <div class="bg-white rounded-2xl p-6 border border-slate-200 space-y-4">
+            <div>
+              <h4 class="font-display font-bold text-lg text-slate-900">Sinkronisasi Konten &amp; Pricelist ke GitHub (kurniawan-arry/bengkel-3garage)</h4>
+              <p class="text-sm text-slate-600 mt-1 leading-relaxed">
+                Perubahan yang Anda simpan langsung aktif di browser ini via <code class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-900">localStorage</code>. Jika ingin perubahan pricelist dan profil bengkel otomatis tampil di semua pengunjung &amp; perangkat lain di GitHub Pages, export <code class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-900">content.json</code> lalu commit ke repository <code class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-900">kurniawan-arry/bengkel-3garage</code>.
+              </p>
+            </div>
+
+            <div class="flex flex-wrap gap-2.5">
+              <button type="button" onclick="downloadContentJson()" class="px-4 py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs sm:text-sm font-bold cursor-pointer">
+                Download content.json
+              </button>
+              <button type="button" onclick="copyContentJson()" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-bold cursor-pointer">
+                Salin JSON Snippet
+              </button>
+              <label class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs sm:text-sm font-bold border border-slate-300 cursor-pointer">
+                <span>Import File JSON</span>
+                <input type="file" id="importJsonFile" accept="application/json,.json" onchange="importContentJsonFile(event)" class="hidden" />
+              </label>
+            </div>
+
+            <textarea id="jsonPreviewArea" rows="10" readonly class="w-full p-3.5 rounded-xl bg-slate-900 text-emerald-300 font-mono text-xs leading-relaxed border border-slate-800"></textarea>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- APPLICATION JAVASCRIPT                                                  -->
+  <!-- ===================================================================== -->
+  <!-- APPLICATION JAVASCRIPT (MODULAR ARCHITECTURE)                         -->
+  <!-- ===================================================================== -->
+  <script src="data.js"></script>
+  <script src="pricelist.js"></script>
+  <script src="workshop.js"></script>
+  <script>
+    /**
+     * Unified Application State & UI Controller
+     * Uses external data.js, pricelist.js, and workshop.js when loaded,
+     * with seamless built-in fallback for single-file sandbox previews.
+     */
+    (function initGarage3App() {
+      const extData = window.GARAGE3_DATA || {};
+      const STORAGE_KEYS = extData.storageKeys || {
+        content: 'garage3_content_v1',
+        pin: 'garage3_admin_pin_v1',
+        gsUrl: 'garage3_gs_url_v1'
+      };
+      const DEFAULT_PIN = extData.defaultPin || '3garage';
+
+      const DEFAULT_CONTENT = extData.defaultContent || {
+        workshop: {
+          brandName: '3 GARAGE',
+          tagline: 'SUBARU & MAZDA SPECIALIST',
+          waNumber: '6281234567890',
+          heroBadge: 'Spesialis Boxer Engine, AWD/CVT Subaru & Skyactiv Mazda',
+          heroTitle: 'Perawatan Presisi & Performa Optimal untuk Subaru & Mazda Anda.',
+          heroSubtitle: '3 GARAGE hadir dengan standar diagnosa terarah, suku cadang terkurasi, serta mekanik berpengalaman khusus platform Subaru Boxer & Mazda Skyactiv — lengkap dengan transparansi estimasi biaya, booking cepat, dan konsultasi langsung via WhatsApp.',
+          address: 'Jl. Otomotif Spesialis No. 3, Kawasan Bengkel — Indonesia',
+          hours: 'Senin – Sabtu: 08.30 – 17.30 WIB • Minggu & Hari Besar: By Appointment'
+        },
+        services: [
+          {
+            id: 'srv-subaru-1',
+            category: 'Subaru',
+            title: 'Service Berkala Boxer + Oli Mesin & Filter',
+            price: 1150000,
+            duration: '60 - 90 Menit',
+            description: 'Penggantian oli mesin & filter oli, inspeksi kebocoran seal Boxer, tekanan ban, rem, fluida, dan scan OBD.'
+          },
+          {
+            id: 'srv-subaru-2',
+            category: 'Subaru',
+            title: 'Kurasi & Ganti Oli Transmisi CVT / AWD Diff',
+            price: 1650000,
+            duration: '90 - 120 Menit',
+            description: 'Perawatan transmisi Lineartronic CVT & diferensial Symmetrical AWD untuk menjaga perpindahan halus dan traksi.'
+          },
+          {
+            id: 'srv-mazda-1',
+            category: 'Mazda',
+            title: 'Skyactiv Tune-Up & Throttle / Intake Cleaning',
+            price: 850000,
+            duration: '60 - 90 Menit',
+            description: 'Pembersihan throttle body, pengecekan busi & koil, reset adaptasi, dan diagnosa sistem Skyactiv-G / Turbo.'
+          },
+          {
+            id: 'srv-mazda-2',
+            category: 'Mazda',
+            title: 'Service Berkala Mazda + Oli & Filter Original/Kurasi',
+            price: 1050000,
+            duration: '60 Menit',
+            description: 'Paket ganti oli mesin, filter oli, inspeksi kaki-kaki, sistem pengereman, aki/i-Stop & pengecekan kolong.'
+          },
+          {
+            id: 'srv-paket-1',
+            category: 'Paket',
+            title: 'Paket General Check-Up & Pre-Purchase Inspection',
+            price: 450000,
+            duration: '45 - 60 Menit',
+            description: 'Pemeriksaan menyeluruh kondisi mesin, transmisi, suspensi, kolong bodi, dan scan DTC sebelum perjalanan jauh atau beli unit.'
+          },
+          {
+            id: 'srv-gen-1',
+            category: 'General',
+            title: 'Perbaikan Kaki-Kaki, Shock & Pengereman (Jasa)',
+            price: 600000,
+            duration: '90 - 180 Menit',
+            description: 'Jasa bongkar pasang shock absorber, arm/bushing, link stabilizer, bearing roda, serta servis kampas & piringan rem.'
+          }
+        ]
+      };
+
+      function cloneObj(obj) {
+        return JSON.parse(JSON.stringify(obj));
+      }
+
+      let appState = (function loadInitialState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEYS.content);
+          if (!raw) return cloneObj(DEFAULT_CONTENT);
+          const parsed = JSON.parse(raw);
+          return {
+            workshop: { ...DEFAULT_CONTENT.workshop, ...(parsed.workshop || {}) },
+            services: Array.isArray(parsed.services) ? parsed.services : cloneObj(DEFAULT_CONTENT.services)
+          };
+        } catch (err) {
+          return cloneObj(DEFAULT_CONTENT);
+        }
+      })();
+
+      let activeCategory = 'ALL';
+      let isAdminUnlocked = false;
+      let invoiceItems = [
+        { name: 'Service Berkala Boxer + Oli Mesin & Filter', qty: 1, price: 1150000 }
+      ];
+
+      function saveContentState() {
+        try {
+          localStorage.setItem(STORAGE_KEYS.content, JSON.stringify(appState));
+        } catch (e) {
+          console.warn('Storage unavailable:', e);
+        }
+        window.syncAllViews();
+        window.syncJsonPreview();
+      }
+
+      function getAdminPin() {
+        try {
+          return localStorage.getItem(STORAGE_KEYS.pin) || DEFAULT_PIN;
+        } catch (e) {
+          return DEFAULT_PIN;
+        }
+      }
+
+      function formatRupiah(amount) {
+        if (window.Garage3Pricelist && typeof window.Garage3Pricelist.formatRupiah === 'function') {
+          return window.Garage3Pricelist.formatRupiah(amount);
+        }
+        return 'Rp ' + (Number(amount) || 0).toLocaleString('id-ID');
+      }
+
+      function sanitizeWaNumber(numStr) {
+        if (window.Garage3Workshop && typeof window.Garage3Workshop.sanitizeWaNumber === 'function') {
+          return window.Garage3Workshop.sanitizeWaNumber(numStr);
+        }
+        const digits = String(numStr || '').replace(/\D/g, '');
+        if (!digits) return '6281234567890';
+        return digits.startsWith('0') ? '62' + digits.slice(1) : digits;
+      }
+
+      function openWhatsAppWithMessage(messageText) {
+        if (window.Garage3Workshop && typeof window.Garage3Workshop.openWhatsApp === 'function') {
+          window.Garage3Workshop.openWhatsApp(appState.workshop.waNumber, messageText);
+          return;
+        }
+        const waNum = sanitizeWaNumber(appState.workshop.waNumber);
+        window.open(`https://wa.me/${waNum}?text=${encodeURIComponent(messageText)}`, '_blank', 'noopener,noreferrer');
+      }
+
+      function showToast(message, type = 'success') {
+        const container = document.getElementById('toastContainer');
+        if (!container) return;
+        const toast = document.createElement('div');
+        toast.className = `pointer-events-auto px-4 py-3 rounded-2xl shadow-xl text-xs sm:text-sm font-semibold ${
+          type === 'error' ? 'bg-red-600 text-white' : 'bg-slate-900 text-white border border-orange-500/40'
+        }`;
+        toast.textContent = message;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 3400);
+      }
+
+      function escapeHtml(str) {
+        return String(str || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function getCategoryBadgeStyle(cat) {
+        if (cat === 'Subaru') return 'bg-blue-100 text-blue-800';
+        if (cat === 'Mazda') return 'bg-red-100 text-red-800';
+        if (cat === 'Paket') return 'bg-orange-100 text-orange-800';
+        return 'bg-slate-200 text-slate-800';
+      }
+
+      function formatHighlightedTitle(titleText) {
+        return escapeHtml(titleText).replace(/(Subaru\s*&\s*Mazda)/i, '<span class="text-orange-600">$1</span>');
+      }
+
+      window.syncAllViews = function () {
+        const w = appState.workshop;
+        document.title = `${w.brandName} — ${w.tagline}`;
+        const setElText = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+        setElText('navBrandName', w.brandName);
+        setElText('navBrandSub', w.tagline);
+        setElText('heroBadgeText', w.heroBadge);
+        const heroTitleEl = document.getElementById('heroTitle');
+        if (heroTitleEl) heroTitleEl.innerHTML = formatHighlightedTitle(w.heroTitle);
+        setElText('heroSubtitle', w.heroSubtitle);
+        setElText('cardWorkshopName', w.brandName);
+        setElText('footerBrandName', w.brandName);
+        setElText('footerAddress', w.address);
+        setElText('footerHours', w.hours);
+        setElText('footerWaDisplay', '+' + sanitizeWaNumber(w.waNumber));
+        setElText('copyrightBrand', `${w.brandName} — ${w.tagline}`);
+        setElText('prevBrandTitle', w.brandName);
+
+        window.renderServices();
+        window.populateBookingServiceSelect();
+        window.populateInvoicePricelistPicker();
+        if (isAdminUnlocked) window.renderAdminServicesList();
+        window.updateInvoicePreview();
+      };
+
+      window.setCategoryFilter = function (cat) {
+        activeCategory = cat;
+        document.querySelectorAll('.cat-tab').forEach(btn => {
+          const isSelected = btn.getAttribute('data-cat') === cat;
+          btn.className = isSelected
+            ? 'cat-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap cursor-pointer bg-slate-900 text-white shadow-sm'
+            : 'cat-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap cursor-pointer bg-slate-100 text-slate-700 hover:bg-slate-200';
+        });
+        window.renderServices();
+      };
+
+      window.renderServices = function () {
+        const grid = document.getElementById('servicesGrid');
+        const emptyBox = document.getElementById('servicesEmpty');
+        if (!grid || !emptyBox) return;
+        const query = (document.getElementById('pricelistSearch')?.value || '').trim().toLowerCase();
+        const filtered = appState.services.filter(item => {
+          const matchesCat = activeCategory === 'ALL' || item.category === activeCategory;
+          const matchesQuery =
+            !query ||
+            item.title.toLowerCase().includes(query) ||
+            item.description.toLowerCase().includes(query) ||
+            item.category.toLowerCase().includes(query);
+          return matchesCat && matchesQuery;
+        });
+        if (!filtered.length) {
+          grid.innerHTML = '';
+          emptyBox.classList.remove('hidden');
+          return;
+        }
+        emptyBox.classList.add('hidden');
+        grid.innerHTML = filtered
+          .map(
+            item => `
+          <article class="bg-slate-50/80 hover:bg-white rounded-2xl p-5 border border-slate-200 hover:border-orange-500/50 shadow-xs hover:shadow-garage transition flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-3">
+                <span class="px-2.5 py-1 rounded-lg text-[11px] font-bold uppercase tracking-wider ${getCategoryBadgeStyle(item.category)}">${escapeHtml(item.category)}</span>
+                <span class="text-xs font-medium text-slate-500">${escapeHtml(item.duration || 'Estimasi Fleksibel')}</span>
+              </div>
+              <h3 class="font-display font-bold text-lg text-slate-900 leading-snug mb-1.5">${escapeHtml(item.title)}</h3>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4">${escapeHtml(item.description)}</p>
+            </div>
+            <div class="pt-3 border-t border-slate-200/80 flex items-center justify-between gap-3">
+              <div>
+                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Estimasi Pricelist</p>
+                <p class="font-display font-extrabold text-base sm:text-lg text-slate-900">${formatRupiah(item.price)}</p>
+              </div>
+              <button type="button" onclick="openBookingModalWithService('${escapeHtml(item.title)}')" class="px-3.5 py-2 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold transition cursor-pointer shrink-0">Booking Layanan</button>
+            </div>
+          </article>
+        `
+          )
+          .join('');
+      };
+
+      window.openModal = function (id) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.classList.remove('hidden');
+        el.classList.add('flex');
+      };
+      window.closeModal = function (id) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.classList.add('hidden');
+        el.classList.remove('flex');
+      };
+      window.openConsultModal = function () { window.openModal('consultModal'); };
+
+      window.handleQuickConsult = function (e) {
+        e.preventDefault();
+        const car = document.getElementById('quickCarModel').value.trim();
+        const issue = document.getElementById('quickIssue').value.trim();
+        const msg = window.Garage3Workshop?.buildConsultMessage
+          ? window.Garage3Workshop.buildConsultMessage(appState.workshop.brandName, { car, notes: issue })
+          : [`Halo *${appState.workshop.brandName}* (${appState.workshop.tagline}),`, 'Saya ingin konsultasi cepat:', `- Kendaraan: *${car}*`, `- Keluhan / Pertanyaan: ${issue}`].join('\n');
+        openWhatsAppWithMessage(msg);
+      };
+
+      window.submitConsultForm = function (e) {
+        e.preventDefault();
+        const name = document.getElementById('consultName').value.trim();
+        const car = document.getElementById('consultCar').value.trim();
+        const plate = document.getElementById('consultPlate').value.trim();
+        const notes = document.getElementById('consultNotes').value.trim();
+        const msg = window.Garage3Workshop?.buildConsultMessage
+          ? window.Garage3Workshop.buildConsultMessage(appState.workshop.brandName, { name, car, plate, notes })
+          : [`Halo *${appState.workshop.brandName}*, saya ingin konsultasi:`, `- Nama: *${name}*`, `- Mobil: *${car}*`, plate ? `- Tahun / Plat: *${plate}*` : null, `- Keluhan / Pertanyaan: ${notes}`].filter(Boolean).join('\n');
+        openWhatsAppWithMessage(msg);
+        window.closeModal('consultModal');
+        e.target.reset();
+      };
+
+      window.populateBookingServiceSelect = function (selectedTitle = '') {
+        const select = document.getElementById('bookingServiceSelect');
+        if (!select) return;
+        select.innerHTML =
+          appState.services
+            .map(s => `<option value="${escapeHtml(s.title)} (${formatRupiah(s.price)})">${escapeHtml(s.category)} — ${escapeHtml(s.title)} (${formatRupiah(s.price)})</option>`)
+            .join('') + `<option value="Konsultasi & Pengecekan Langsung di Bengkel">Konsultasi &amp; Pengecekan Langsung di Bengkel</option>`;
+        if (selectedTitle) {
+          for (const opt of select.options) {
+            if (opt.value.includes(selectedTitle)) {
+              select.value = opt.value;
+              break;
+            }
+          }
+        }
+      };
+
+      window.openBookingModal = function () {
+        const dateInput = document.getElementById('bookingDate');
+        if (dateInput && !dateInput.value) dateInput.value = new Date().toISOString().split('T')[0];
+        window.populateBookingServiceSelect();
+        window.openModal('bookingModal');
+      };
+
+      window.openBookingModalWithService = function (serviceTitle) {
+        const dateInput = document.getElementById('bookingDate');
+        if (dateInput && !dateInput.value) dateInput.value = new Date().toISOString().split('T')[0];
+        window.populateBookingServiceSelect(serviceTitle);
+        window.openModal('bookingModal');
+      };
+
+      window.submitBookingForm = function (e) {
+        e.preventDefault();
+        const payload = {
+          name: document.getElementById('bookingName').value.trim(),
+          phone: document.getElementById('bookingPhone').value.trim(),
+          car: document.getElementById('bookingCar').value.trim(),
+          plate: document.getElementById('bookingPlate').value.trim(),
+          service: document.getElementById('bookingServiceSelect').value,
+          date: document.getElementById('bookingDate').value,
+          time: document.getElementById('bookingTime').value,
+          notes: document.getElementById('bookingNotes').value.trim()
+        };
+        const msg = window.Garage3Workshop?.buildBookingMessage
+          ? window.Garage3Workshop.buildBookingMessage(appState.workshop.brandName, payload)
+          : [`Halo *${appState.workshop.brandName}*, saya ingin *BOOKING SERVIS*:`, `- Nama: *${payload.name}*`, `- No. HP/WA: *${payload.phone}*`, `- Kendaraan: *${payload.car}*`, `- No. Plat: *${payload.plate}*`, `- Layanan: *${payload.service}*`, `- Jadwal: *${payload.date}* pukul *${payload.time}*`, payload.notes ? `- Catatan: ${payload.notes}` : null].filter(Boolean).join('\n');
+        openWhatsAppWithMessage(msg);
+        window.closeModal('bookingModal');
+        e.target.reset();
+      };
+
+      window.toggleFaq = function (btn) {
+        const content = btn.nextElementSibling;
+        const icon = btn.querySelector('.faq-icon');
+        const isHidden = content.classList.contains('hidden');
+        content.classList.toggle('hidden', !isHidden);
+        if (icon) icon.textContent = isHidden ? '−' : '+';
+      };
+
+      window.openAdminModal = function () {
+        window.openModal('adminModal');
+        updateAdminLockUI();
+      };
+      window.verifyAdminPin = function (e) {
+        e.preventDefault();
+        if (document.getElementById('adminPinInput').value.trim() === getAdminPin()) {
+          isAdminUnlocked = true;
+          document.getElementById('adminPinInput').value = '';
+          updateAdminLockUI();
+          window.populateWorkshopFormFields();
+          window.renderAdminServicesList();
+          window.initInvoiceDefaults();
+          window.syncJsonPreview();
+          showToast('Akses Admin dibuka.');
+        } else {
+          showToast('PIN Admin salah. Default: 3garage', 'error');
+        }
+      };
+      window.lockAdminSession = function () {
+        isAdminUnlocked = false;
+        updateAdminLockUI();
+      };
+      function updateAdminLockUI() {
+        document.getElementById('adminPinGate').classList.toggle('hidden', isAdminUnlocked);
+        document.getElementById('adminWorkspace').classList.toggle('hidden', !isAdminUnlocked);
+        document.getElementById('lockAdminBtn').classList.toggle('hidden', !isAdminUnlocked);
+      }
+      window.switchAdminTab = function (tabName) {
+        document.querySelectorAll('.admin-tab').forEach(btn => {
+          const active = btn.getAttribute('data-admintab') === tabName;
+          btn.className = active
+            ? 'admin-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-orange-500 text-white cursor-pointer'
+            : 'admin-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-white text-slate-700 hover:bg-slate-100 border border-slate-200 cursor-pointer';
+        });
+        document.querySelectorAll('.admin-panel').forEach(panel => {
+          panel.classList.toggle('hidden', panel.id !== `adminTab-${tabName}`);
+        });
+        if (tabName === 'github') window.syncJsonPreview();
+        else if (tabName === 'invoice') {
+          window.populateInvoicePricelistPicker();
+          window.updateInvoicePreview();
+        }
+      };
+
+      window.renderAdminServicesList = function () {
+        const listEl = document.getElementById('adminServicesList');
+        const countEl = document.getElementById('adminServiceCount');
+        if (!listEl) return;
+        if (countEl) countEl.textContent = appState.services.length;
+        listEl.innerHTML = appState.services
+          .map(
+            (item, idx) => `
+          <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/70 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="min-w-0">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${getCategoryBadgeStyle(item.category)}">${escapeHtml(item.category)}</span>
+                <span class="font-bold text-sm text-slate-900 truncate">${escapeHtml(item.title)}</span>
+              </div>
+              <p class="text-xs font-extrabold text-orange-600 mt-0.5">${formatRupiah(item.price)} <span class="text-slate-400 font-normal">• ${escapeHtml(item.duration || '-')}</span></p>
+              <p class="text-xs text-slate-600 line-clamp-1 mt-0.5">${escapeHtml(item.description)}</p>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button type="button" onclick="moveService(${idx}, -1)" ${idx === 0 ? 'disabled' : ''} class="px-2 py-1.5 rounded-lg bg-white border border-slate-300 text-xs font-bold disabled:opacity-35 cursor-pointer">↑</button>
+              <button type="button" onclick="moveService(${idx}, 1)" ${idx === appState.services.length - 1 ? 'disabled' : ''} class="px-2 py-1.5 rounded-lg bg-white border border-slate-300 text-xs font-bold disabled:opacity-35 cursor-pointer">↓</button>
+              <button type="button" onclick="editServiceItem('${item.id}')" class="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold cursor-pointer">Edit</button>
+              <button type="button" onclick="deleteServiceItem('${item.id}')" class="px-2.5 py-1.5 rounded-lg bg-red-100 hover:bg-red-200 text-red-700 text-xs font-bold cursor-pointer">Hapus</button>
+            </div>
+          </div>
+        `
+          )
+          .join('');
+      };
+
+      window.saveServiceItem = function (e) {
+        e.preventDefault();
+        const idInput = document.getElementById('editServiceId').value;
+        const payload = {
+          category: document.getElementById('srvCategory').value,
+          duration: document.getElementById('srvDuration').value.trim(),
+          title: document.getElementById('srvTitle').value.trim(),
+          price: Number(document.getElementById('srvPrice').value) || 0,
+          description: document.getElementById('srvDesc').value.trim()
+        };
+        if (idInput) {
+          const idx = appState.services.findIndex(s => s.id === idInput);
+          if (idx !== -1) appState.services[idx] = { ...appState.services[idx], ...payload };
+        } else {
+          appState.services.unshift({ id: 'srv-' + Date.now(), ...payload });
+        }
+        saveContentState();
+        window.resetServiceForm();
+        showToast('Pricelist diperbarui.');
+      };
+      window.editServiceItem = function (id) {
+        const item = appState.services.find(s => s.id === id);
+        if (!item) return;
+        document.getElementById('editServiceId').value = item.id;
+        document.getElementById('srvCategory').value = item.category;
+        document.getElementById('srvDuration').value = item.duration || '';
+        document.getElementById('srvTitle').value = item.title;
+        document.getElementById('srvPrice').value = item.price;
+        document.getElementById('srvDesc').value = item.description;
+      };
+      window.deleteServiceItem = function (id) {
+        appState.services = appState.services.filter(s => s.id !== id);
+        saveContentState();
+      };
+      window.moveService = function (index, delta) {
+        const target = index + delta;
+        if (target < 0 || target >= appState.services.length) return;
+        [appState.services[index], appState.services[target]] = [appState.services[target], appState.services[index]];
+        saveContentState();
+      };
+      window.resetServiceForm = function () {
+        document.getElementById('editServiceId').value = '';
+        document.getElementById('srvDuration').value = '';
+        document.getElementById('srvTitle').value = '';
+        document.getElementById('srvPrice').value = '';
+        document.getElementById('srvDesc').value = '';
+      };
+      window.restoreDefaultData = function () {
+        appState = cloneObj(DEFAULT_CONTENT);
+        saveContentState();
+        window.populateWorkshopFormFields();
+      };
+      window.populateWorkshopFormFields = function () {
+        const w = appState.workshop;
+        document.getElementById('cfgBrandName').value = w.brandName;
+        document.getElementById('cfgWaNumber').value = w.waNumber;
+        document.getElementById('cfgHeroBadge').value = w.heroBadge;
+        document.getElementById('cfgHeroTitle').value = w.heroTitle;
+        document.getElementById('cfgHeroSubtitle').value = w.heroSubtitle;
+        document.getElementById('cfgAddress').value = w.address;
+        document.getElementById('cfgHours').value = w.hours;
+        document.getElementById('cfgNewPin').value = '';
+      };
+      window.saveWorkshopSettings = function (e) {
+        e.preventDefault();
+        appState.workshop = {
+          ...appState.workshop,
+          brandName: document.getElementById('cfgBrandName').value.trim() || '3 GARAGE',
+          waNumber: sanitizeWaNumber(document.getElementById('cfgWaNumber').value.trim()),
+          heroBadge: document.getElementById('cfgHeroBadge').value.trim(),
+          heroTitle: document.getElementById('cfgHeroTitle').value.trim(),
+          heroSubtitle: document.getElementById('cfgHeroSubtitle').value.trim(),
+          address: document.getElementById('cfgAddress').value.trim(),
+          hours: document.getElementById('cfgHours').value.trim()
+        };
+        const newPin = document.getElementById('cfgNewPin').value.trim();
+        if (newPin) localStorage.setItem(STORAGE_KEYS.pin, newPin);
+        saveContentState();
+        showToast('Pengaturan bengkel disimpan.');
+      };
+
+      window.initInvoiceDefaults = function () {
+        const dateEl = document.getElementById('invDate');
+        if (dateEl && !dateEl.value) dateEl.value = new Date().toISOString().split('T')[0];
+        const numEl = document.getElementById('invNumber');
+        if (numEl && !numEl.value) window.generateNewInvoiceNumber();
+        const gsInput = document.getElementById('gsWebAppUrl');
+        if (gsInput) gsInput.value = localStorage.getItem(STORAGE_KEYS.gsUrl) || '';
+        window.populateInvoicePricelistPicker();
+        window.renderInvoiceItemsTable();
+        window.updateInvoicePreview();
+      };
+      window.generateNewInvoiceNumber = function () {
+        const now = new Date();
+        const numEl = document.getElementById('invNumber');
+        if (numEl) {
+          numEl.value = `INV-3G-${now.toISOString().slice(0, 10).replace(/-/g, '')}-${String(now.getTime()).slice(-4)}`;
+        }
+        window.updateInvoicePreview();
+      };
+      window.populateInvoicePricelistPicker = function () {
+        const picker = document.getElementById('invPricelistPicker');
+        if (!picker) return;
+        picker.innerHTML = appState.services
+          .map((s, idx) => `<option value="${idx}">${escapeHtml(s.title)} — ${formatRupiah(s.price)}</option>`)
+          .join('');
+      };
+      window.addPricelistItemToInvoice = function () {
+        const srv = appState.services[Number(document.getElementById('invPricelistPicker').value)];
+        if (!srv) return;
+        invoiceItems.push({ name: srv.title, qty: 1, price: Number(srv.price) || 0 });
+        window.renderInvoiceItemsTable();
+        window.updateInvoicePreview();
+      };
+      window.addCustomInvoiceRow = function () {
+        invoiceItems.push({ name: '', qty: 1, price: 0 });
+        window.renderInvoiceItemsTable();
+        window.updateInvoicePreview();
+      };
+      window.removeInvoiceRow = function (index) {
+        invoiceItems.splice(index, 1);
+        window.renderInvoiceItemsTable();
+        window.updateInvoicePreview();
+      };
+      window.updateInvoiceRowField = function (index, field, value) {
+        if (!invoiceItems[index]) return;
+        invoiceItems[index][field] = field === 'name' ? value : Math.max(0, Number(value) || 0);
+        window.renderInvoiceItemsTable();
+        window.updateInvoicePreview();
+      };
+      window.renderInvoiceItemsTable = function () {
+        const tbody = document.getElementById('invoiceItemsBody');
+        if (!tbody) return;
+        tbody.innerHTML = invoiceItems
+          .map(
+            (row, i) => `
+          <tr>
+            <td class="p-2"><input type="text" value="${escapeHtml(row.name)}" onchange="updateInvoiceRowField(${i}, 'name', this.value)" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-300 text-xs" /></td>
+            <td class="p-2"><input type="number" min="1" value="${row.qty}" onchange="updateInvoiceRowField(${i}, 'qty', this.value)" class="w-full px-2 py-1.5 rounded-lg border border-slate-300 text-xs" /></td>
+            <td class="p-2"><input type="number" min="0" step="1000" value="${row.price}" onchange="updateInvoiceRowField(${i}, 'price', this.value)" class="w-full px-2 py-1.5 rounded-lg border border-slate-300 text-xs" /></td>
+            <td class="p-2.5 text-right font-bold text-slate-800 whitespace-nowrap">${formatRupiah((row.qty || 0) * (row.price || 0))}</td>
+            <td class="p-2 text-center"><button type="button" onclick="removeInvoiceRow(${i})" class="text-red-500 font-bold px-1.5 cursor-pointer">&times;</button></td>
+          </tr>
+        `
+          )
+          .join('');
+      };
+      function getCalculatedInvoiceData() {
+        const invNumber = document.getElementById('invNumber')?.value.trim() || 'INV-3G-001';
+        const invDate = document.getElementById('invDate')?.value || '';
+        const customer = document.getElementById('invCustomer')?.value.trim() || '-';
+        const phone = document.getElementById('invPhone')?.value.trim() || '-';
+        const car = document.getElementById('invCar')?.value.trim() || '-';
+        const plate = document.getElementById('invPlate')?.value.trim() || '-';
+        const discount = Math.max(0, Number(document.getElementById('invDiscount')?.value) || 0);
+        const notes = document.getElementById('invNotes')?.value.trim() || '';
+        const totals = window.Garage3Pricelist?.calculateTotals
+          ? window.Garage3Pricelist.calculateTotals(invoiceItems, discount)
+          : (() => {
+              const subtotal = invoiceItems.reduce((acc, r) => acc + (Number(r.qty) || 0) * (Number(r.price) || 0), 0);
+              return { subtotal, discount, total: Math.max(0, subtotal - discount) };
+            })();
+        return {
+          invNumber,
+          invDate,
+          customer,
+          phone,
+          car,
+          plate,
+          items: invoiceItems,
+          itemsSummary: invoiceItems.map(r => `${r.name || 'Item'} (x${r.qty})`).join('; '),
+          subtotal: totals.subtotal,
+          discount: totals.discount,
+          total: totals.total,
+          notes
+        };
+      }
+      window.updateInvoicePreview = function () {
+        const d = getCalculatedInvoiceData();
+        const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+        setEl('prevInvNumber', d.invNumber);
+        setEl('prevInvDate', d.invDate || '-');
+        setEl('prevCustomer', d.customer);
+        setEl('prevPhone', d.phone);
+        setEl('prevCar', d.car);
+        setEl('prevPlate', d.plate);
+        const itemsListEl = document.getElementById('prevItemsList');
+        if (itemsListEl) {
+          itemsListEl.innerHTML = d.items
+            .map(r => `<div class="flex justify-between gap-2"><span class="text-slate-700">${escapeHtml(r.name || 'Item')} <span class="text-slate-400">x${r.qty}</span></span><span class="font-semibold text-slate-900 whitespace-nowrap">${formatRupiah((r.qty || 0) * (r.price || 0))}</span></div>`)
+            .join('');
+        }
+        setEl('prevSubtotal', formatRupiah(d.subtotal));
+        setEl('prevDiscount', '- ' + formatRupiah(d.discount));
+        setEl('prevTotal', formatRupiah(d.total));
+        setEl('prevNotes', d.notes ? `Catatan: ${d.notes}` : '');
+      };
+      function copyTextFallback(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      function triggerFileDownload(content, filename, mimeType) {
+        const blob = new Blob([content], { type: mimeType });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
+      }
+      window.copyInvoiceTSV = function () {
+        const d = getCalculatedInvoiceData();
+        const tsv = window.Garage3Pricelist?.buildTSV
+          ? window.Garage3Pricelist.buildTSV(d)
+          : [['No Invoice', 'Tanggal', 'Pelanggan', 'No WA', 'Kendaraan', 'No Plat', 'Items', 'Subtotal', 'Diskon', 'Total', 'Catatan'].join('\t'), [d.invNumber, d.invDate, d.customer, d.phone, d.car, d.plate, d.itemsSummary, d.subtotal, d.discount, d.total, d.notes].join('\t')].join('\n');
+        copyTextFallback(tsv);
+        showToast('Baris invoice (TSV) disalin untuk Google Sheets.');
+      };
+      window.downloadInvoiceCSV = function () {
+        const d = getCalculatedInvoiceData();
+        const csv = window.Garage3Pricelist?.buildCSV
+          ? window.Garage3Pricelist.buildCSV(d)
+          : '\uFEFF' + [['No Invoice', 'Tanggal', 'Pelanggan', 'No WA', 'Kendaraan', 'No Plat', 'Items', 'Subtotal', 'Diskon', 'Total', 'Catatan'], [d.invNumber, d.invDate, d.customer, d.phone, d.car, d.plate, d.itemsSummary, d.subtotal, d.discount, d.total, d.notes]].map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
+        triggerFileDownload(csv, `${d.invNumber}.csv`, 'text/csv;charset=utf-8;');
+      };
+      window.saveGsUrl = function () {
+        localStorage.setItem(STORAGE_KEYS.gsUrl, document.getElementById('gsWebAppUrl').value.trim());
+      };
+      window.sendInvoiceToGoogleSheet = async function () {
+        const url = document.getElementById('gsWebAppUrl').value.trim();
+        if (!url) {
+          showToast('Masukkan URL Google Apps Script terlebih dahulu.', 'error');
+          return;
+        }
+        try {
+          if (window.Garage3Pricelist?.postToGoogleSheet) {
+            await window.Garage3Pricelist.postToGoogleSheet(url, getCalculatedInvoiceData());
+          } else {
+            await fetch(url, {
+              method: 'POST',
+              mode: 'no-cors',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(getCalculatedInvoiceData())
+            });
+          }
+          showToast('Permintaan kirim invoice ke Google Sheets diproses.');
+        } catch (err) {
+          showToast('Gagal mengirim ke Google Sheets.', 'error');
+        }
+      };
+      window.toggleAppsScriptGuide = function () {
+        document.getElementById('appsScriptGuideBox').classList.toggle('hidden');
+      };
+      window.copyAppsScriptCode = function () {
+        copyTextFallback(document.getElementById('appsScriptCode').textContent);
+        showToast('Kode Apps Script disalin.');
+      };
+      window.syncJsonPreview = function () {
+        const area = document.getElementById('jsonPreviewArea');
+        if (area) area.value = JSON.stringify(appState, null, 2);
+      };
+      window.downloadContentJson = function () {
+        triggerFileDownload(JSON.stringify(appState, null, 2), 'content.json', 'application/json');
+      };
+      window.copyContentJson = function () {
+        copyTextFallback(JSON.stringify(appState, null, 2));
+        showToast('JSON disalin.');
+      };
+      window.importContentJsonFile = function (event) {
+        const file = event.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function (ev) {
+          try {
+            const parsed = JSON.parse(String(ev.target.result || ''));
+            appState = {
+              workshop: { ...DEFAULT_CONTENT.workshop, ...(parsed.workshop || {}) },
+              services: parsed.services || appState.services
+            };
+            saveContentState();
+            window.populateWorkshopFormFields();
+            showToast('JSON berhasil diimport.');
+          } catch (err) {
+            showToast('File JSON tidak valid.', 'error');
+          }
+        };
+        reader.readAsText(file);
+      };
+
+      const REPO_FILE_SPECS = {
+        'assets/README.md': {
+          desc: 'Panduan penempatan logo 3 GARAGE & aset visual di folder assets/',
+          code: `# Folder \`assets/\` — 3 GARAGE (Subaru & Mazda Specialist)\n\nFolder ini digunakan untuk menyimpan aset visual dan file pendukung pada repository GitHub **\`kurniawan-arry/bengkel-3garage\`**:\n\n- \`assets/logo-3garage.png\` — File logo utama **3 GARAGE — SUBARU & MAZDA SPECIALIST** (3 bilah miring hitam dengan aksen lengkungan oranye dan tipografi tegas).\n- \`assets/workshop-bay.jpg\` — Foto/ilustrasi area pengerjaan bengkel Subaru & Mazda.\n- \`assets/content.json\` — (Opsional) Salinan JSON hasil export dari panel Admin CMS agar perubahan pricelist dan profil bengkel dapat di-commit ke GitHub.`
+        },
+        'data.js': {
+          desc: 'Data awal profil bengkel 3 GARAGE, nomor WA, alamat, FAQ, dan pricelist Subaru & Mazda',
+          code: `/**\n * data.js\n * Data awal/default untuk aplikasi web 3 GARAGE — SUBARU & MAZDA SPECIALIST.\n */\nconst GARAGE3_DATA = ${JSON.stringify({ storageKeys: STORAGE_KEYS, defaultPin: DEFAULT_PIN, defaultContent: { ...DEFAULT_CONTENT, faqs: extData.defaultContent?.faqs || [] } }, null, 2)};\n\nif (typeof window !== 'undefined') {\n  window.GARAGE3_DATA = GARAGE3_DATA;\n}`
+        },
+        'pricelist.js': {
+          desc: 'Modul perhitungan IDR, rakitan invoice, format TSV/CSV Google Sheets & Google Apps Script',
+          code: `/**\n * pricelist.js\n * Modul logika pricelist & generator invoice Google Sheets untuk 3 GARAGE.\n */\nconst Garage3Pricelist = {\n  formatRupiah(amount) {\n    const num = Number(amount) || 0;\n    return 'Rp ' + num.toLocaleString('id-ID');\n  },\n  calculateTotals(items = [], discount = 0) {\n    const subtotal = (items || []).reduce((acc, row) => {\n      const qty = Math.max(0, Number(row.qty) || 0);\n      const price = Math.max(0, Number(row.price) || 0);\n      return acc + qty * price;\n    }, 0);\n    const cleanDiscount = Math.max(0, Number(discount) || 0);\n    const total = Math.max(0, subtotal - cleanDiscount);\n    return { subtotal, discount: cleanDiscount, total };\n  },\n  summarizeItems(items = []) {\n    return (items || []).map(r => \`\${r.name || 'Item'} (x\${Number(r.qty) || 1})\`).join('; ');\n  },\n  buildTSV(invoice) {\n    const totals = this.calculateTotals(invoice.items, invoice.discount);\n    const headers = ['No Invoice', 'Tanggal', 'Pelanggan', 'No WA', 'Kendaraan', 'No Plat', 'Items', 'Subtotal', 'Diskon', 'Total', 'Catatan'].join('\\t');\n    const row = [invoice.invNumber || '', invoice.invDate || '', invoice.customer || '', invoice.phone || '', invoice.car || '', invoice.plate || '', this.summarizeItems(invoice.items), totals.subtotal, totals.discount, totals.total, invoice.notes || ''].join('\\t');\n    return \`\${headers}\\n\${row}\`;\n  },\n  buildCSV(invoice) {\n    const totals = this.calculateTotals(invoice.items, invoice.discount);\n    const rows = [\n      ['No Invoice', 'Tanggal', 'Pelanggan', 'No WA', 'Kendaraan', 'No Plat', 'Items', 'Subtotal', 'Diskon', 'Total', 'Catatan'],\n      [invoice.invNumber || '', invoice.invDate || '', invoice.customer || '', invoice.phone || '', invoice.car || '', invoice.plate || '', this.summarizeItems(invoice.items), totals.subtotal, totals.discount, totals.total, invoice.notes || '']\n    ];\n    return '\\uFEFF' + rows.map(r => r.map(cell => \`"\${String(cell ?? '').replace(/"/g, '""')}"\`).join(',')).join('\\n');\n  },\n  async postToGoogleSheet(webAppUrl, invoice) {\n    if (!webAppUrl) throw new Error('URL Google Apps Script belum diisi.');\n    const totals = this.calculateTotals(invoice.items, invoice.discount);\n    const payload = { ...invoice, itemsSummary: this.summarizeItems(invoice.items), subtotal: totals.subtotal, discount: totals.discount, total: totals.total };\n    await fetch(webAppUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });\n    return payload;\n  }\n};\n\nif (typeof window !== 'undefined') {\n  window.Garage3Pricelist = Garage3Pricelist;\n}`
+        },
+        'workshop.js': {
+          desc: 'Modul state CMS, CRUD pricelist tanpa edit kode, dan format pesan WhatsApp (wa.me)',
+          code: `/**\n * workshop.js\n * Modul logika aplikasi, CMS konten & pricelist tanpa edit kode, serta alur WhatsApp 3 GARAGE.\n */\nconst Garage3Workshop = {\n  sanitizeWaNumber(numStr) {\n    const digits = String(numStr || '').replace(/\\D/g, '');\n    if (!digits) return '6281234567890';\n    return digits.startsWith('0') ? '62' + digits.slice(1) : digits;\n  },\n  buildConsultMessage(brandName, { name, car, plate, notes }) {\n    return [\n      \`Halo *\${brandName}*, saya ingin konsultasi:\`,\n      name ? \`- Nama: *\${name}*\` : null,\n      car ? \`- Mobil: *\${car}*\` : null,\n      plate ? \`- Tahun / Plat: *\${plate}*\` : null,\n      notes ? \`- Keluhan / Pertanyaan: \${notes}\` : null\n    ].filter(Boolean).join('\\n');\n  },\n  buildBookingMessage(brandName, { name, phone, car, plate, service, date, time, notes }) {\n    return [\n      \`Halo *\${brandName}*, saya ingin *BOOKING SERVIS*:\`,\n      name ? \`- Nama: *\${name}*\` : null,\n      phone ? \`- No. HP/WA: *\${phone}*\` : null,\n      car ? \`- Kendaraan: *\${car}*\` : null,\n      plate ? \`- No. Plat: *\${plate}*\` : null,\n      service ? \`- Layanan: *\${service}*\` : null,\n      date || time ? \`- Jadwal: *\${date || '-'}* pukul *\${time || '-'}*\` : null,\n      notes ? \`- Catatan: \${notes}\` : null\n    ].filter(Boolean).join('\\n');\n  },\n  openWhatsApp(waNumber, message) {\n    const cleanNum = this.sanitizeWaNumber(waNumber);\n    window.open(\`https://wa.me/\${cleanNum}?text=\${encodeURIComponent(message)}\`, '_blank', 'noopener,noreferrer');\n  }\n};\n\nif (typeof window !== 'undefined') {\n  window.Garage3Workshop = Garage3Workshop;\n}`
+        },
+        'index.html': {
+          desc: 'Halaman utama 3 GARAGE yang memuat data.js, pricelist.js, dan workshop.js',
+          code: document.documentElement ? '<!DOCTYPE html>\n' + document.documentElement.outerHTML : ''
+        }
+      };
+
+      let currentInspectorFile = 'assets/README.md';
+
+      window.switchInspectorTab = function (fileKey) {
+        currentInspectorFile = fileKey;
+        document.querySelectorAll('.file-tab').forEach(btn => {
+          const isActive = btn.getAttribute('data-filetab') === fileKey;
+          btn.className = isActive
+            ? 'file-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-orange-500 text-white whitespace-nowrap cursor-pointer'
+            : 'file-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 whitespace-nowrap cursor-pointer';
+        });
+        const spec = REPO_FILE_SPECS[fileKey];
+        if (spec) {
+          const pathEl = document.getElementById('inspectorFilePath');
+          const descEl = document.getElementById('inspectorFileDesc');
+          const codeEl = document.getElementById('inspectorCodeBlock');
+          if (pathEl) pathEl.textContent = fileKey;
+          if (descEl) descEl.textContent = spec.desc;
+          if (codeEl) codeEl.textContent = spec.code;
+        }
+      };
+
+      window.copyActiveInspectorFile = function () {
+        const spec = REPO_FILE_SPECS[currentInspectorFile];
+        if (!spec) return;
+        copyTextFallback(spec.code);
+        showToast(`Kode ${currentInspectorFile} disalin.`);
+      };
+
+      function boot() {
+        const yearEl = document.getElementById('currentYear');
+        if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+        window.syncAllViews();
+        window.syncJsonPreview();
+        window.switchInspectorTab('assets/README.md');
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', boot);
+      } else {
+        boot();
+      }
+    })();
+  </script>
+</body>
+</html>
