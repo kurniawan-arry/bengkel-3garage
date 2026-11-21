@@ -18,7 +18,7 @@ const GARAGE3_DATA = {
       heroTitle: 'Perawatan Presisi & Performa Optimal untuk Subaru & Mazda Anda.',
       heroSubtitle: '3 GARAGE hadir dengan standar diagnosa terarah, suku cadang terkurasi, serta mekanik berpengalaman khusus platform Subaru Boxer & Mazda Skyactiv — lengkap dengan transparansi estimasi biaya, booking cepat, dan konsultasi langsung via WhatsApp.',
       address: 'RUKO FRANKFURT, Gading Serpong, BLOK F/09, Klp. Dua, Kecamatan Kelapa Dua, Kabupaten Tangerang, Banten 15810',
-      hours: 'Senin – Sabtu: 09.00 – 17.00 WIB • Minggu & Hari Besar: By Appointment '
+      hours: 'Senin – Sabtu: 08.30 – 17.30 WIB • Minggu & Hari Besar: By Appointment'
     },
     services: [
       {
