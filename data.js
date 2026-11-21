@@ -8,7 +8,7 @@ const GARAGE3_DATA = {
     pin: 'garage3_admin_pin_v1',
     gsUrl: 'garage3_gs_url_v1'
   },
-  defaultPin: '3garage',
+  defaultPin: '3Garage2026',
   defaultContent: {
     workshop: {
       brandName: '3 GARAGE',
