@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>3 GARAGE — Subaru &amp; Mazda Specialist</title>
-  <meta name="description" content="Bengkel spesialis Subaru dan Mazda di RUKO FRANKFURT, Gading Serpong, BLOK F/09, Klp. Dua, Kec. Kelapa Dua, Kab. Tangerang, Banten 15810." />
+  <meta name="description" content="Bengkel spesialis Subaru dan Mazda di RUKO FRANKFURT, Gading Serpong, BLOK F/09, Klp. Dua, Kecamatan Kelapa Dua, Kabupaten Tangerang, Banten 15810." />
 
   <!-- Inter & Plus Jakarta Sans Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -509,7 +509,6 @@
             Klik tombol <strong>Konsultasi WA</strong> atau <strong>Booking Servis WA</strong>, isi data kendaraan serta keluhan atau jadwal yang diinginkan, lalu sistem akan menyusun pesan otomatis dan membukanya ke WhatsApp bengkel.
           </div>
         </div>
-
       </div>
     </div>
   </section>
@@ -517,7 +516,7 @@
   <!-- Location & Contact Footer -->
   <footer id="lokasi" class="dark-garage-bg text-white pt-14 pb-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pb-10 border-b border-slate-800">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pb-10 border-b border-slate-800">
 
         <div class="space-y-3">
           <div class="flex items-center gap-3">
@@ -536,7 +535,7 @@
               <p class="text-xs text-orange-400 font-semibold">SUBARU &amp; MAZDA SPECIALIST</p>
             </div>
           </div>
-          <p id="footerDescription" class="text-sm text-slate-400 leading-relaxed">
+          <p id="footerDescription" class="text-sm text-slate-400 leading-relaxed max-w-md">
             Bengkel spesialis perawatan, diagnosa, dan perbaikan Subaru &amp; Mazda dengan layanan cepat via WhatsApp.
           </p>
         </div>
@@ -556,84 +555,10 @@
             <span>Buka di Google Maps</span>
           </a>
         </div>
-
-        <div class="space-y-3">
-          <h4 class="font-display font-bold text-white uppercase tracking-wider text-xs text-orange-400">Akses Cepat</h4>
-          <div class="flex flex-wrap gap-2.5">
-            <button type="button" onclick="openConsultModal()" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition cursor-pointer">
-              Konsultasi WA
-            </button>
-            <button type="button" onclick="openBookingModal()" class="px-4 py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold transition cursor-pointer">
-              Booking Servis WA
-            </button>
-            <button type="button" onclick="openAdminModal()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold border border-slate-700 transition cursor-pointer">
-              Admin CMS &amp; Invoice
-            </button>
-          </div>
-          <p class="text-xs text-slate-500">
-            Repo target: <span class="text-slate-400">kurniawan-arry/bengkel-3garage</span>
-          </p>
-        </div>
       </div>
-
-      <!-- Modular File Inspector & Asset Downloads -->
-      <section id="struktur-file" class="mt-10 pt-8 border-t border-slate-800 space-y-5">
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-3">
-          <div>
-            <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-orange-500/20 text-orange-400 mb-1.5">
-              GitHub Repository Blueprint • kurniawan-arry/bengkel-3garage
-            </span>
-            <h3 class="font-display text-xl sm:text-2xl font-extrabold text-white">
-              Struktur File Modular &amp; Source Inspector
-            </h3>
-            <p class="text-xs sm:text-sm text-slate-400 mt-1">
-              Unduh <code class="text-orange-300">logo-3garage.png</code> dan <code class="text-orange-300">workshop-bay.jpg</code> ke folder <code class="text-orange-300">assets/</code> lalu push bersama <code class="text-orange-300">index.html</code>, <code class="text-orange-300">data.js</code>, <code class="text-orange-300">pricelist.js</code>, dan <code class="text-orange-300">workshop.js</code>.
-            </p>
-          </div>
-
-          <div class="flex flex-wrap items-center gap-2">
-            <button type="button" onclick="downloadLogoPng()" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition cursor-pointer">
-              Download logo-3garage.png
-            </button>
-            <button type="button" onclick="downloadWorkshopJpg()" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition cursor-pointer">
-              Download workshop-bay.jpg
-            </button>
-            <button type="button" onclick="copyActiveInspectorFile()" class="px-3.5 py-2 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold transition cursor-pointer">
-              Salin File Aktif
-            </button>
-          </div>
-        </div>
-
-        <div id="fileInspectorTabs" class="flex items-center gap-2 overflow-x-auto pb-1">
-          <button type="button" data-filetab="assets/README.md" onclick="switchInspectorTab('assets/README.md')" class="file-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-orange-500 text-white whitespace-nowrap cursor-pointer">
-            assets/ (Panduan &amp; Logo)
-          </button>
-          <button type="button" data-filetab="data.js" onclick="switchInspectorTab('data.js')" class="file-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 whitespace-nowrap cursor-pointer">
-            data.js
-          </button>
-          <button type="button" data-filetab="pricelist.js" onclick="switchInspectorTab('pricelist.js')" class="file-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 whitespace-nowrap cursor-pointer">
-            pricelist.js
-          </button>
-          <button type="button" data-filetab="workshop.js" onclick="switchInspectorTab('workshop.js')" class="file-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 whitespace-nowrap cursor-pointer">
-            workshop.js
-          </button>
-          <button type="button" data-filetab="index.html" onclick="switchInspectorTab('index.html')" class="file-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 whitespace-nowrap cursor-pointer">
-            index.html
-          </button>
-        </div>
-
-        <div class="rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden">
-          <div class="px-4 py-2.5 bg-slate-900 border-b border-slate-800 flex items-center justify-between text-xs">
-            <span id="inspectorFilePath" class="font-mono font-bold text-orange-400">assets/README.md</span>
-            <span id="inspectorFileDesc" class="text-slate-400 hidden sm:inline">Panduan penempatan aset visual &amp; logo 3 GARAGE</span>
-          </div>
-          <pre id="inspectorCodeBlock" class="p-4 text-xs font-mono text-emerald-300 overflow-x-auto max-h-80 leading-relaxed"></pre>
-        </div>
-      </section>
 
       <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
         <p>© <span id="currentYear">2026</span> <span id="copyrightBrand">3 GARAGE — Subaru &amp; Mazda Specialist</span>. All rights reserved.</p>
-        <p>Static Web App • CMS Content + Pricelist + Google Sheets Invoice Ready</p>
       </div>
     </div>
   </footer>
@@ -702,7 +627,7 @@
           </div>
           <div>
             <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1">No. HP / WA *</label>
-            <input type="tel" id="bookingPhone" required placeholder="08xxxxxxxxxx" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-orange-500" />
+            <input type="tel" id="bookingPhone" required placeholder="081287691811" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-orange-500" />
           </div>
         </div>
 
@@ -785,10 +710,10 @@
         </div>
         <h4 class="font-display font-extrabold text-xl text-slate-900">Akses Admin Bengkel</h4>
         <p class="text-sm text-slate-600">
-          Masukkan PIN Admin untuk mengubah konten, pricelist, dan membuat invoice Google Sheets. PIN default: <strong class="text-slate-900">""</strong>.
+          Masukkan PIN Admin untuk mengubah konten, pricelist, dan membuat invoice Google Sheets.
         </p>
         <form onsubmit="verifyAdminPin(event)" class="space-y-3 pt-1">
-          <input type="password" id="adminPinInput" required placeholder="Masukkan PIN" class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white text-center text-sm font-semibold tracking-wider focus:outline-none focus:border-orange-500" />
+          <input type="password" id="adminPinInput" required placeholder="Masukkan PIN Admin" class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white text-center text-sm font-semibold tracking-wider focus:outline-none focus:border-orange-500" />
           <button type="submit" class="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm transition cursor-pointer">
             Masuk ke Admin Panel
           </button>
@@ -965,7 +890,7 @@
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
                   <label class="block text-[11px] font-bold text-slate-600 mb-1">No. WA Pelanggan</label>
-                  <input type="text" id="invPhone" oninput="updateInvoicePreview()" placeholder="08..." class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs" />
+                  <input type="text" id="invPhone" oninput="updateInvoicePreview()" placeholder="081287691811" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs" />
                 </div>
                 <div>
                   <label class="block text-[11px] font-bold text-slate-600 mb-1">Kendaraan (Subaru/Mazda)</label>
@@ -1176,9 +1101,9 @@
         <div id="adminTab-github" class="admin-panel hidden space-y-4">
           <div class="bg-white rounded-2xl p-6 border border-slate-200 space-y-4">
             <div>
-              <h4 class="font-display font-bold text-lg text-slate-900">Sinkronisasi Konten &amp; Pricelist ke GitHub (kurniawan-arry/bengkel-3garage)</h4>
+              <h4 class="font-display font-bold text-lg text-slate-900">Sinkronisasi Konten &amp; Pricelist ke GitHub</h4>
               <p class="text-sm text-slate-600 mt-1 leading-relaxed">
-                Perubahan yang Anda simpan langsung aktif di browser ini via <code class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-900">localStorage</code>. Jika ingin perubahan pricelist dan profil bengkel otomatis tampil di semua pengunjung &amp; perangkat lain di GitHub Pages, export <code class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-900">content.json</code> lalu commit ke repository <code class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-900">kurniawan-arry/bengkel-3garage</code>.
+                Perubahan yang Anda simpan langsung aktif di browser ini via <code class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-900">localStorage</code>. Jika ingin perubahan pricelist dan profil bengkel otomatis tampil di semua pengunjung &amp; perangkat lain, export <code class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-900">content.json</code> lalu commit ke repository GitHub Anda.
               </p>
             </div>
 
@@ -1226,7 +1151,7 @@
           heroTitle: 'Perawatan Presisi & Performa Optimal untuk Subaru & Mazda Anda.',
           heroSubtitle: '3 GARAGE hadir dengan standar diagnosa terarah, suku cadang terkurasi, serta mekanik berpengalaman khusus platform Subaru Boxer & Mazda Skyactiv — lengkap dengan transparansi estimasi biaya, booking cepat, dan konsultasi langsung via WhatsApp.',
           address: 'RUKO FRANKFURT, Gading Serpong, BLOK F/09, Klp. Dua, Kecamatan Kelapa Dua, Kabupaten Tangerang, Banten 15810',
-          hours: 'Senin – Sabtu: 09.00 – 17.00 WIB • Minggu & Hari Besar: By Appointment'
+          hours: 'Senin – Sabtu: 09.00 – 17.00 WIB • Minggu: Tutup'
         },
         services: [
           {
@@ -1574,7 +1499,7 @@
           window.syncJsonPreview();
           showToast('Akses Admin dibuka.');
         } else {
-          showToast('PIN Admin salah. Default: 3garage', 'error');
+          showToast('PIN Admin salah.', 'error');
         }
       };
       window.lockAdminSession = function () {
@@ -1939,196 +1864,11 @@
         reader.readAsText(file);
       };
 
-      const REPO_FILE_SPECS = {
-        'assets/README.md': {
-          desc: 'Panduan penempatan logo 3 GARAGE & aset visual di folder assets/',
-          code: `# Folder \`assets/\` — 3 GARAGE (Subaru & Mazda Specialist)\n\nFolder ini digunakan untuk menyimpan aset visual dan file pendukung pada repository GitHub **\`kurniawan-arry/bengkel-3garage\`**:\n\n- \`assets/logo-3garage.png\` — File logo utama **3 GARAGE — SUBARU & MAZDA SPECIALIST**.\n- \`assets/workshop-bay.jpg\` — Foto/ilustrasi area pengerjaan bengkel Subaru & Mazda.\n- \`assets/content.json\` — Data konten lengkap hasil export dari panel Admin CMS.`
-        },
-        'data.js': {
-          desc: 'Data awal profil bengkel 3 GARAGE, nomor WA, alamat, FAQ, dan pricelist Subaru & Mazda',
-          code: `const GARAGE3_DATA = ${JSON.stringify({ storageKeys: STORAGE_KEYS, defaultPin: DEFAULT_PIN, defaultContent: { ...DEFAULT_CONTENT, faqs: extData.defaultContent?.faqs || [] } }, null, 2)};\n\nif (typeof window !== 'undefined') {\n  window.GARAGE3_DATA = GARAGE3_DATA;\n}`
-        },
-        'pricelist.js': {
-          desc: 'Modul perhitungan IDR, rakitan invoice, format TSV/CSV Google Sheets & Google Apps Script',
-          code: `const Garage3Pricelist = {\n  formatRupiah(amount) {\n    return 'Rp ' + (Number(amount) || 0).toLocaleString('id-ID');\n  },\n  calculateTotals(items = [], discount = 0) {\n    const subtotal = (items || []).reduce((acc, row) => acc + Math.max(0, Number(row.qty) || 0) * Math.max(0, Number(row.price) || 0), 0);\n    const cleanDiscount = Math.max(0, Number(discount) || 0);\n    return { subtotal, discount: cleanDiscount, total: Math.max(0, subtotal - cleanDiscount) };\n  }\n};\n\nif (typeof window !== 'undefined') {\n  window.Garage3Pricelist = Garage3Pricelist;\n}`
-        },
-        'workshop.js': {
-          desc: 'Modul state CMS, CRUD pricelist tanpa edit kode, dan format pesan WhatsApp (wa.me)',
-          code: `const Garage3Workshop = {\n  sanitizeWaNumber(numStr) {\n    const digits = String(numStr || '').replace(/\\D/g, '');\n    if (!digits) return '6281287691811';\n    return digits.startsWith('0') ? '62' + digits.slice(1) : digits;\n  },\n  openWhatsApp(waNumber, message) {\n    window.open(\`https://wa.me/\${this.sanitizeWaNumber(waNumber)}?text=\${encodeURIComponent(message)}\`, '_blank', 'noopener,noreferrer');\n  }\n};\n\nif (typeof window !== 'undefined') {\n  window.Garage3Workshop = Garage3Workshop;\n}`
-        },
-        'index.html': {
-          desc: 'Halaman utama 3 GARAGE yang memuat data.js, pricelist.js, dan workshop.js',
-          code: document.documentElement ? '<!DOCTYPE html>\n' + document.documentElement.outerHTML : ''
-        }
-      };
-
-      let currentInspectorFile = 'assets/README.md';
-
-      window.switchInspectorTab = function (fileKey) {
-        currentInspectorFile = fileKey;
-        document.querySelectorAll('.file-tab').forEach(btn => {
-          const isActive = btn.getAttribute('data-filetab') === fileKey;
-          btn.className = isActive
-            ? 'file-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-orange-500 text-white whitespace-nowrap cursor-pointer'
-            : 'file-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-slate-800 text-slate-300 hover:bg-slate-700 whitespace-nowrap cursor-pointer';
-        });
-        const spec = REPO_FILE_SPECS[fileKey];
-        if (spec) {
-          const pathEl = document.getElementById('inspectorFilePath');
-          const descEl = document.getElementById('inspectorFileDesc');
-          const codeEl = document.getElementById('inspectorCodeBlock');
-          if (pathEl) pathEl.textContent = fileKey;
-          if (descEl) descEl.textContent = spec.desc;
-          if (codeEl) codeEl.textContent = spec.code;
-        }
-      };
-
-      window.copyActiveInspectorFile = function () {
-        const spec = REPO_FILE_SPECS[currentInspectorFile];
-        if (!spec) return;
-        copyTextFallback(spec.code);
-        showToast(`Kode ${currentInspectorFile} disalin.`);
-      };
-
-      function render3GarageLogoCanvas(size = 800) {
-        const canvas = document.createElement('canvas');
-        canvas.width = size;
-        canvas.height = size;
-        const ctx = canvas.getContext('2d');
-        ctx.fillStyle = '#FFFFFF';
-        ctx.fillRect(0, 0, size, size);
-
-        const bars = [
-          [[225, 110], [340, 110], [235, 420], [120, 420]],
-          [[375, 110], [490, 110], [385, 420], [270, 420]],
-          [[525, 110], [640, 110], [535, 420], [420, 420]]
-        ];
-        ctx.fillStyle = '#0B0F19';
-        bars.forEach(poly => {
-          ctx.beginPath();
-          ctx.moveTo(poly[0][0], poly[0][1]);
-          for (let i = 1; i < poly.length; i++) ctx.lineTo(poly[i][0], poly[i][1]);
-          ctx.closePath();
-          ctx.fill();
-        });
-
-        ctx.fillStyle = '#F97316';
-        ctx.beginPath();
-        ctx.moveTo(335, 535);
-        ctx.bezierCurveTo(495, 515, 615, 420, 608, 255);
-        ctx.bezierCurveTo(680, 345, 655, 505, 465, 572);
-        ctx.closePath();
-        ctx.fill();
-
-        ctx.fillStyle = '#0B0F19';
-        ctx.beginPath();
-        ctx.moveTo(85, 610);
-        ctx.lineTo(535, 495);
-        ctx.bezierCurveTo(635, 470, 695, 405, 700, 305);
-        ctx.bezierCurveTo(725, 430, 665, 538, 515, 585);
-        ctx.lineTo(85, 665);
-        ctx.closePath();
-        ctx.fill();
-
-        ctx.fillStyle = '#0B0F19';
-        ctx.font = 'italic 900 102px Inter, "Plus Jakarta Sans", Arial, sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText('GARAGE', size / 2, 775);
-
-        ctx.font = '800 30px Inter, "Plus Jakarta Sans", Arial, sans-serif';
-        ctx.fillText('SUBARU & MAZDA SPECIALIST', size / 2, 830);
-
-        return canvas;
-      }
-
-      window.downloadLogoPng = function () {
-        const canvas = render3GarageLogoCanvas(800);
-        canvas.toBlob(blob => {
-          if (!blob) return;
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = 'logo-3garage.png';
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
-          showToast('File logo-3garage.png berhasil diunduh.');
-        }, 'image/png');
-      };
-
-      window.downloadWorkshopJpg = function () {
-        const canvas = document.createElement('canvas');
-        canvas.width = 1200;
-        canvas.height = 675;
-        const ctx = canvas.getContext('2d');
-
-        const grad = ctx.createLinearGradient(0, 0, 1200, 675);
-        grad.addColorStop(0, '#0B1120');
-        grad.addColorStop(1, '#1E293B');
-        ctx.fillStyle = grad;
-        ctx.fillRect(0, 0, 1200, 675);
-
-        ctx.fillStyle = 'rgba(249, 115, 22, 0.16)';
-        ctx.beginPath();
-        ctx.arc(960, 160, 260, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.fillStyle = '#F97316';
-        ctx.font = 'bold 20px Inter, Arial, sans-serif';
-        ctx.fillText('3 GARAGE • RUKO FRANKFURT BLOK F/09', 72, 110);
-
-        ctx.fillStyle = '#FFFFFF';
-        ctx.font = '800 54px Inter, Arial, sans-serif';
-        ctx.fillText('SUBARU & MAZDA SPECIALIST', 72, 185);
-
-        ctx.fillStyle = '#CBD5E1';
-        ctx.font = '500 26px Inter, Arial, sans-serif';
-        ctx.fillText('Gading Serpong, Kelapa Dua, Kab. Tangerang, Banten 15810', 72, 240);
-
-        const bayCards = [
-          { title: '01. SUBARU BAY', sub: 'Boxer Service, AWD & CVT' },
-          { title: '02. MAZDA BAY', sub: 'Skyactiv Tune-Up & Scan' },
-          { title: '03. CHASSIS & INVOICE', sub: 'Suspensi, Rem & Google Sheet' }
-        ];
-        bayCards.forEach((c, i) => {
-          const x = 72 + i * 360;
-          const y = 320;
-          ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
-          ctx.fillRect(x, y, 336, 220);
-          ctx.strokeStyle = 'rgba(249, 115, 22, 0.45)';
-          ctx.lineWidth = 2;
-          ctx.strokeRect(x, y, 336, 220);
-
-          ctx.fillStyle = '#F97316';
-          ctx.font = 'bold 20px Inter, Arial, sans-serif';
-          ctx.fillText(c.title, x + 24, y + 60);
-
-          ctx.fillStyle = '#FFFFFF';
-          ctx.font = '600 22px Inter, Arial, sans-serif';
-          ctx.fillText(c.sub, x + 24, y + 110);
-        });
-
-        canvas.toBlob(blob => {
-          if (!blob) return;
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = 'workshop-bay.jpg';
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          URL.revokeObjectURL(url);
-          showToast('File workshop-bay.jpg berhasil diunduh.');
-        }, 'image/jpeg', 0.92);
-      };
-
       function boot() {
         const yearEl = document.getElementById('currentYear');
         if (yearEl) yearEl.textContent = String(new Date().getFullYear());
         window.syncAllViews();
         window.syncJsonPreview();
-        window.switchInspectorTab('assets/README.md');
       }
 
       if (document.readyState === 'loading') {
