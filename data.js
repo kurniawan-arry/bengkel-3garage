@@ -13,12 +13,12 @@ const GARAGE3_DATA = {
     workshop: {
       brandName: '3 GARAGE',
       tagline: 'SUBARU & MAZDA SPECIALIST',
-      waNumber: '6281234567890',
+      waNumber: '6281287691811',
       heroBadge: 'Spesialis Boxer Engine, AWD/CVT Subaru & Skyactiv Mazda',
       heroTitle: 'Perawatan Presisi & Performa Optimal untuk Subaru & Mazda Anda.',
       heroSubtitle: '3 GARAGE hadir dengan standar diagnosa terarah, suku cadang terkurasi, serta mekanik berpengalaman khusus platform Subaru Boxer & Mazda Skyactiv — lengkap dengan transparansi estimasi biaya, booking cepat, dan konsultasi langsung via WhatsApp.',
-      address: 'Jl. Otomotif Spesialis No. 3, Kawasan Bengkel — Indonesia',
-      hours: 'Senin – Sabtu: 08.30 – 17.30 WIB • Minggu & Hari Besar: By Appointment'
+      address: 'RUKO FRANKFURT, Gading Serpong, BLOK F/09, Klp. Dua, Kecamatan Kelapa Dua, Kabupaten Tangerang, Banten 15810',
+      hours: 'Senin – Sabtu: 09.00 – 17.00 WIB • Minggu & Hari Besar: By Appointment '
     },
     services: [
       {
@@ -78,10 +78,6 @@ const GARAGE3_DATA = {
       {
         question: 'Bagaimana cara booking servis atau konsultasi keluhan?',
         answer: 'Klik tombol Konsultasi WA atau Booking Servis WA, isi detail kendaraan & keluhan atau jadwal yang diinginkan, lalu sistem akan menyusun pesan otomatis dan membukanya ke WhatsApp bengkel.'
-      },
-      {
-        question: 'Bagaimana Admin mengupdate pricelist dan membuat invoice Google Sheets?',
-        answer: 'Buka menu Admin / Invoice (PIN default: 3garage) untuk menambah/mengedit/menghapus layanan & harga tanpa edit kode, export/import content.json untuk GitHub, serta merakit invoice untuk dicetak atau dikirim/disalin ke Google Sheets.'
       }
     ]
   }

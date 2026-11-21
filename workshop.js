@@ -5,7 +5,7 @@
 const Garage3Workshop = {
   sanitizeWaNumber(numStr) {
     const digits = String(numStr || '').replace(/\D/g, '');
-    if (!digits) return '6281234567890';
+    if (!digits) return '6281287691811';
     return digits.startsWith('0') ? '62' + digits.slice(1) : digits;
   },
 

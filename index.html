@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>3 GARAGE — Subaru &amp; Mazda Specialist</title>
-  <meta name="description" content="Bengkel spesialis Subaru dan Mazda: Boxer engine, Skyactiv, AWD, CVT, transmisi, suspensi, perawatan berkala, konsultasi & booking WhatsApp, CMS admin, serta builder invoice Google Sheets." />
+  <meta name="description" content="Bengkel spesialis Subaru dan Mazda di RUKO FRANKFURT, Gading Serpong, BLOK F/09, Klp. Dua, Kec. Kelapa Dua, Kab. Tangerang, Banten 15810." />
 
   <!-- Inter & Plus Jakarta Sans Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -46,7 +46,6 @@
       overflow-x: hidden;
     }
 
-    /* Subtle automotive carbon/grid texture */
     .garage-grid-bg {
       background-image:
         radial-gradient(circle at 85% 15%, rgba(249, 115, 22, 0.16), transparent 45%),
@@ -64,8 +63,11 @@
       background-size: 100% 100%, 32px 32px, 32px 32px;
     }
 
-    /* Print styling for clean Invoice export / PDF */
     @media print {
+      @page {
+        size: A4 portrait;
+        margin: 12mm;
+      }
       body * {
         visibility: hidden !important;
       }
@@ -77,12 +79,14 @@
         left: 0 !important;
         top: 0 !important;
         width: 100% !important;
+        max-width: 100% !important;
         margin: 0 !important;
-        padding: 20px !important;
+        padding: 18px 22px !important;
         background: #FFFFFF !important;
         color: #0F172A !important;
         box-shadow: none !important;
-        border: none !important;
+        border: 1px solid #CBD5E1 !important;
+        border-radius: 10px !important;
       }
       .no-print {
         display: none !important;
@@ -100,17 +104,15 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16 sm:h-20 gap-3">
 
-        <!-- 3 GARAGE Brand Logo (Geometric '3' + Speed Wing + Orange Accent) -->
+        <!-- 3 GARAGE Brand Logo -->
         <a href="#beranda" class="flex items-center gap-2.5 sm:gap-3 group shrink-0">
-          <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-center p-1 group-hover:border-orange-500/50 transition">
-            <svg viewBox="0 0 120 100" class="w-full h-full" aria-label="Logo 3 GARAGE">
-              <!-- Three bold slanted speed bars forming '3' -->
+          <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-white border border-slate-200 shadow-sm flex items-center justify-center p-1 group-hover:border-orange-500/50 transition overflow-hidden">
+            <img src="assets/logo-3garage.png" alt="Logo 3 GARAGE" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" class="w-full h-full object-contain" />
+            <svg viewBox="0 0 120 100" class="w-full h-full hidden" aria-label="Logo 3 GARAGE">
               <polygon points="34,12 52,12 36,54 18,54" fill="#0F172A" />
               <polygon points="58,12 76,12 60,54 42,54" fill="#0F172A" />
               <polygon points="82,12 100,12 84,54 66,54" fill="#0F172A" />
-              <!-- Vibrant orange swooping speed arc -->
               <path d="M52,72 C76,68 95,54 94,32 C105,45 102,68 72,77 Z" fill="#F97316" />
-              <!-- Lower black speed wing/base -->
               <path d="M12,84 L82,66 C98,62 108,52 109,38 C113,56 104,72 80,79 L12,92 Z" fill="#0F172A" />
             </svg>
           </div>
@@ -184,7 +186,7 @@
           </h1>
 
           <p id="heroSubtitle" class="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl">
-            3 GARAGE hadir dengan standar diagnosa komputerisasi, suku cadang terkurasi, serta mekanik berpengalaman khusus platform Subaru Boxer &amp; Mazda Skyactiv — lengkap dengan transparansi estimasi biaya, booking cepat, dan layanan konsultasi langsung via WhatsApp.
+            3 GARAGE hadir dengan standar diagnosa terarah, suku cadang terkurasi, serta mekanik berpengalaman khusus platform Subaru Boxer &amp; Mazda Skyactiv — lengkap dengan transparansi estimasi biaya, booking cepat, dan konsultasi langsung via WhatsApp.
           </p>
 
           <!-- Primary CTA Buttons -->
@@ -212,7 +214,7 @@
           </div>
 
           <!-- Quick Trust Metrics -->
-          <div class="grid grid-cols-3 gap-3 sm:gap-6 pt-4 border-t border-slate-200/90 max-w-xl">
+          <div class="grid grid-cols-2 gap-4 sm:gap-8 pt-4 border-t border-slate-200/90 max-w-md">
             <div>
               <p class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900">100%</p>
               <p class="text-xs sm:text-sm text-slate-500 font-medium">Fokus Subaru &amp; Mazda</p>
@@ -220,10 +222,6 @@
             <div>
               <p class="font-display text-2xl sm:text-3xl font-extrabold text-orange-600">OBD / Scan</p>
               <p class="text-xs sm:text-sm text-slate-500 font-medium">Diagnosa Akurat</p>
-            </div>
-            <div>
-              <p class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900">CMS + Sheet</p>
-              <p class="text-xs sm:text-sm text-slate-500 font-medium">Pricelist &amp; Invoice</p>
             </div>
           </div>
         </div>
@@ -233,8 +231,9 @@
           <div class="dark-garage-bg rounded-3xl p-6 sm:p-7 text-white shadow-2xl border border-slate-800 relative overflow-hidden">
             <div class="flex items-center justify-between gap-3 pb-5 border-b border-slate-800">
               <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-2xl bg-white flex items-center justify-center p-1.5 shrink-0">
-                  <svg viewBox="0 0 120 100" class="w-full h-full">
+                <div class="w-12 h-12 rounded-2xl bg-white flex items-center justify-center p-1.5 shrink-0 overflow-hidden">
+                  <img src="assets/logo-3garage.png" alt="Logo 3 GARAGE" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" class="w-full h-full object-contain" />
+                  <svg viewBox="0 0 120 100" class="w-full h-full hidden">
                     <polygon points="34,12 52,12 36,54 18,54" fill="#0F172A" />
                     <polygon points="58,12 76,12 60,54 42,54" fill="#0F172A" />
                     <polygon points="82,12 100,12 84,54 66,54" fill="#0F172A" />
@@ -248,7 +247,7 @@
                 </div>
               </div>
               <span class="px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-xs font-semibold">
-                Buka Layanan
+                Gading Serpong
               </span>
             </div>
 
@@ -270,7 +269,6 @@
               </div>
             </div>
 
-            <!-- Instant Quick WhatsApp Consultation Box inside Hero Card -->
             <form id="quickWaForm" onsubmit="handleQuickConsult(event)" class="bg-slate-900/95 border border-slate-700/80 rounded-2xl p-4 space-y-3">
               <div class="flex items-center justify-between">
                 <span class="text-xs font-bold uppercase tracking-wider text-orange-400">Tanya Mekanik Cepat</span>
@@ -298,7 +296,6 @@
   <section id="layanan" class="py-14 sm:py-20 bg-white border-b border-slate-200/80">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-      <!-- Section Header -->
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
         <div>
           <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-orange-100 text-orange-700 mb-2">
@@ -312,7 +309,6 @@
           </p>
         </div>
 
-        <!-- Search & Filter Controls -->
         <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
           <div class="relative">
             <input type="text" id="pricelistSearch" oninput="renderServices()" placeholder="Cari layanan, oli, CVT, Skyactiv..." class="w-full sm:w-64 pl-9 pr-4 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-orange-500 focus:bg-white transition" />
@@ -323,7 +319,6 @@
         </div>
       </div>
 
-      <!-- Category Filter Tabs -->
       <div id="categoryTabs" class="flex items-center gap-2 overflow-x-auto pb-3 mb-7">
         <button type="button" data-cat="ALL" onclick="setCategoryFilter('ALL')" class="cat-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition whitespace-nowrap cursor-pointer bg-slate-900 text-white shadow-sm">
           Semua Layanan
@@ -342,10 +337,8 @@
         </button>
       </div>
 
-      <!-- Services Grid (Populated dynamically by JS) -->
       <div id="servicesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
 
-      <!-- Empty State when no filter matches -->
       <div id="servicesEmpty" class="hidden text-center py-12 px-4 rounded-2xl bg-slate-50 border border-dashed border-slate-300 mt-4">
         <p class="font-bold text-slate-800">Tidak ada layanan yang cocok dengan filter/pencarian.</p>
         <p class="text-sm text-slate-500 mt-1">Coba kata kunci lain atau pilih kategori "Semua Layanan".</p>
@@ -426,7 +419,6 @@
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Card 1 -->
         <div class="group rounded-2xl overflow-hidden border border-slate-200 bg-slate-900 text-white shadow-garage">
           <div class="h-48 dark-garage-bg p-6 flex flex-col justify-between relative">
             <span class="self-start px-3 py-1 rounded-full bg-orange-500 text-white text-xs font-bold">Boxer &amp; AWD Bay</span>
@@ -442,11 +434,10 @@
             </div>
           </div>
           <div class="p-5 bg-white text-slate-700 text-sm">
-            Ganti oli mesin &amp; gardan/CVT, pengecekan kebocoran seal, busi, koil, hingga tune-up berkala Subaru XV, Forester, Impreza &amp; Levorg.
+            Ganti oli mesin &amp; gardan/CVT, pengecekan kebocoran seal Boxer, busi, koil, hingga tune-up berkala Subaru XV, Forester, Impreza &amp; Levorg.
           </div>
         </div>
 
-        <!-- Card 2 -->
         <div class="group rounded-2xl overflow-hidden border border-slate-200 bg-slate-900 text-white shadow-garage">
           <div class="h-48 dark-garage-bg p-6 flex flex-col justify-between relative">
             <span class="self-start px-3 py-1 rounded-full bg-orange-500 text-white text-xs font-bold">Skyactiv Bay</span>
@@ -465,7 +456,6 @@
           </div>
         </div>
 
-        <!-- Card 3 -->
         <div class="group rounded-2xl overflow-hidden border border-slate-200 bg-slate-900 text-white shadow-garage">
           <div class="h-48 dark-garage-bg p-6 flex flex-col justify-between relative">
             <span class="self-start px-3 py-1 rounded-full bg-orange-500 text-white text-xs font-bold">Chassis &amp; Handling</span>
@@ -506,7 +496,7 @@
             <span class="faq-icon text-orange-600 text-xl leading-none font-bold">+</span>
           </button>
           <div class="faq-content hidden px-5 pb-4 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
-            Spesialisasi utama kami berada pada lini kendaraan Subaru dan Mazda (baik mesin NA maupun turbo, AWD, CVT/AT, serta kaki-kaki). Untuk pengecekan umum atau konsultasi unit tertentu, silakan hubungi kami via WhatsApp terlebih dahulu.
+            Spesialisasi utama kami berada pada lini kendaraan Subaru dan Mazda (baik mesin NA maupun turbo, AWD, CVT/AT, serta kaki-kaki). Untuk pengecekan umum atau unit tertentu, silakan hubungi kami via WhatsApp terlebih dahulu.
           </div>
         </div>
 
@@ -538,11 +528,11 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pb-10 border-b border-slate-800">
 
-        <!-- Brand & Summary -->
         <div class="space-y-3">
           <div class="flex items-center gap-3">
-            <div class="w-11 h-11 rounded-xl bg-white p-1.5 flex items-center justify-center shrink-0">
-              <svg viewBox="0 0 120 100" class="w-full h-full">
+            <div class="w-11 h-11 rounded-xl bg-white p-1.5 flex items-center justify-center shrink-0 overflow-hidden">
+              <img src="assets/logo-3garage.png" alt="Logo 3 GARAGE" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" class="w-full h-full object-contain" />
+              <svg viewBox="0 0 120 100" class="w-full h-full hidden">
                 <polygon points="34,12 52,12 36,54 18,54" fill="#0F172A" />
                 <polygon points="58,12 76,12 60,54 42,54" fill="#0F172A" />
                 <polygon points="82,12 100,12 84,54 66,54" fill="#0F172A" />
@@ -560,21 +550,22 @@
           </p>
         </div>
 
-        <!-- Address & Hours -->
         <div class="space-y-2.5 text-sm">
           <h4 class="font-display font-bold text-white uppercase tracking-wider text-xs text-orange-400">Alamat &amp; Jam Operasional</h4>
           <p id="footerAddress" class="text-slate-300 leading-relaxed">
-            Jl. Otomotif Spesialis No. 3, Kawasan Bengkel — Indonesia
+            RUKO FRANKFURT, Gading Serpong, BLOK F/09, Klp. Dua, Kecamatan Kelapa Dua, Kabupaten Tangerang, Banten 15810
           </p>
           <p id="footerHours" class="text-slate-400">
-            Senin – Sabtu: 08.30 – 17.30 WIB • Minggu &amp; Hari Besar: By Appointment
+            Senin – Sabtu: 09.00 – 17.00 WIB • Minggu: Tutup
           </p>
           <p class="text-slate-300">
-            WhatsApp: <span id="footerWaDisplay" class="font-bold text-orange-400">+62 812-3456-7890</span>
+            WhatsApp: <span id="footerWaDisplay" class="font-bold text-orange-400">+62 812-8769-1811</span>
           </p>
+          <a href="https://www.google.com/maps/search/?api=1&query=RUKO+FRANKFURT+Gading+Serpong+BLOK+F%2F09+Kelapa+Dua+Tangerang+Banten+15810" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-bold text-orange-400 hover:text-orange-300 underline">
+            <span>Buka di Google Maps</span>
+          </a>
         </div>
 
-        <!-- Quick Actions -->
         <div class="space-y-3">
           <h4 class="font-display font-bold text-white uppercase tracking-wider text-xs text-orange-400">Akses Cepat</h4>
           <div class="flex flex-wrap gap-2.5">
@@ -594,7 +585,7 @@
         </div>
       </div>
 
-      <!-- Modular File Inspector & GitHub Push Structure Section -->
+      <!-- Modular File Inspector & Asset Downloads -->
       <section id="struktur-file" class="mt-10 pt-8 border-t border-slate-800 space-y-5">
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-3">
           <div>
@@ -605,18 +596,23 @@
               Struktur File Modular &amp; Source Inspector
             </h3>
             <p class="text-xs sm:text-sm text-slate-400 mt-1">
-              Terdiri dari <code class="text-orange-300">index.html</code>, folder <code class="text-orange-300">assets/</code>, <code class="text-orange-300">data.js</code>, <code class="text-orange-300">pricelist.js</code>, dan <code class="text-orange-300">workshop.js</code>.
+              Unduh <code class="text-orange-300">logo-3garage.png</code> dan <code class="text-orange-300">workshop-bay.jpg</code> ke folder <code class="text-orange-300">assets/</code> lalu push bersama <code class="text-orange-300">index.html</code>, <code class="text-orange-300">data.js</code>, <code class="text-orange-300">pricelist.js</code>, dan <code class="text-orange-300">workshop.js</code>.
             </p>
           </div>
 
           <div class="flex flex-wrap items-center gap-2">
+            <button type="button" onclick="downloadLogoPng()" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition cursor-pointer">
+              Download logo-3garage.png
+            </button>
+            <button type="button" onclick="downloadWorkshopJpg()" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition cursor-pointer">
+              Download workshop-bay.jpg
+            </button>
             <button type="button" onclick="copyActiveInspectorFile()" class="px-3.5 py-2 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold transition cursor-pointer">
               Salin File Aktif
             </button>
           </div>
         </div>
 
-        <!-- File Tabs -->
         <div id="fileInspectorTabs" class="flex items-center gap-2 overflow-x-auto pb-1">
           <button type="button" data-filetab="assets/README.md" onclick="switchInspectorTab('assets/README.md')" class="file-tab px-3.5 py-2 rounded-xl text-xs font-bold bg-orange-500 text-white whitespace-nowrap cursor-pointer">
             assets/ (Panduan &amp; Logo)
@@ -635,7 +631,6 @@
           </button>
         </div>
 
-        <!-- Inspector Output Box -->
         <div class="rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden">
           <div class="px-4 py-2.5 bg-slate-900 border-b border-slate-800 flex items-center justify-between text-xs">
             <span id="inspectorFilePath" class="font-mono font-bold text-orange-400">assets/README.md</span>
@@ -652,9 +647,7 @@
     </div>
   </footer>
 
-  <!-- ===================================================================== -->
-  <!-- MODAL 1: WHATSAPP CONSULTATION                                        -->
-  <!-- ===================================================================== -->
+  <!-- MODAL 1: WHATSAPP CONSULTATION -->
   <div id="consultModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/70 backdrop-blur-xs p-4 overflow-y-auto">
     <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden my-auto">
       <div class="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
@@ -699,9 +692,7 @@
     </div>
   </div>
 
-  <!-- ===================================================================== -->
-  <!-- MODAL 2: WHATSAPP BOOKING                                             -->
-  <!-- ===================================================================== -->
+  <!-- MODAL 2: WHATSAPP BOOKING -->
   <div id="bookingModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/70 backdrop-blur-xs p-4 overflow-y-auto">
     <div class="bg-white rounded-3xl max-w-xl w-full shadow-2xl border border-slate-200 overflow-hidden my-auto">
       <div class="px-6 py-4 bg-slate-900 text-white flex items-center justify-between">
@@ -774,13 +765,10 @@
     </div>
   </div>
 
-  <!-- ===================================================================== -->
-  <!-- MODAL 3: ADMIN CMS, PRICELIST BUILDER & GOOGLE SHEETS INVOICE         -->
-  <!-- ===================================================================== -->
+  <!-- MODAL 3: ADMIN CMS, PRICELIST BUILDER & GOOGLE SHEETS INVOICE -->
   <div id="adminModal" class="fixed inset-0 z-50 hidden items-start justify-center bg-slate-950/75 backdrop-blur-xs p-3 sm:p-6 overflow-y-auto">
     <div class="bg-slate-50 rounded-3xl max-w-6xl w-full shadow-2xl border border-slate-200 overflow-hidden my-auto">
 
-      <!-- Admin Header -->
       <div class="px-5 sm:px-7 py-4 bg-slate-900 text-white flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-3">
           <span class="w-9 h-9 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center font-extrabold">3G</span>
@@ -800,7 +788,6 @@
         </div>
       </div>
 
-      <!-- PIN Gate Screen -->
       <div id="adminPinGate" class="p-6 sm:p-10 max-w-md mx-auto text-center space-y-4">
         <div class="w-14 h-14 rounded-2xl bg-orange-500/15 text-orange-600 flex items-center justify-center mx-auto font-display font-extrabold text-xl">
           PIN
@@ -817,10 +804,8 @@
         </form>
       </div>
 
-      <!-- Authenticated Admin Workspace -->
       <div id="adminWorkspace" class="hidden p-4 sm:p-6 space-y-5">
 
-        <!-- Admin Navigation Tabs -->
         <div class="flex flex-wrap items-center gap-2 border-b border-slate-200 pb-3">
           <button type="button" data-admintab="services" onclick="switchAdminTab('services')" class="admin-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-orange-500 text-white cursor-pointer">
             1. Layanan &amp; Pricelist CMS
@@ -840,7 +825,6 @@
         <div id="adminTab-services" class="admin-panel space-y-5">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
 
-            <!-- Add / Edit Service Form -->
             <div class="lg:col-span-5 bg-white rounded-2xl p-5 border border-slate-200 shadow-xs h-fit">
               <div class="flex items-center justify-between mb-3">
                 <h4 id="serviceFormTitle" class="font-display font-bold text-base text-slate-900">Tambah Item Layanan / Pricelist</h4>
@@ -888,7 +872,6 @@
               </form>
             </div>
 
-            <!-- Existing Items List with Reorder / Edit / Delete -->
             <div class="lg:col-span-7 bg-white rounded-2xl p-5 border border-slate-200 shadow-xs">
               <div class="flex items-center justify-between mb-3">
                 <h4 class="font-display font-bold text-base text-slate-900">Daftar Pricelist Aktif (<span id="adminServiceCount">0</span>)</h4>
@@ -914,7 +897,7 @@
                 <input type="text" id="cfgBrandName" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
               </div>
               <div>
-                <label class="block text-xs font-bold text-slate-600 mb-1">Nomor WhatsApp (Format Internasional, cth: 6281234567890) *</label>
+                <label class="block text-xs font-bold text-slate-600 mb-1">Nomor WhatsApp (Format Internasional, cth: 6281287691811) *</label>
                 <input type="text" id="cfgWaNumber" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
               </div>
             </div>
@@ -962,8 +945,7 @@
         <div id="adminTab-invoice" class="admin-panel hidden space-y-6">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-            <!-- Left: Invoice & Pricelist Quote Builder -->
-            <div class="lg:col-span-7 bg-white rounded-2xl p-5 border border-slate-200 space-y-4">
+            <div class="lg:col-span-6 bg-white rounded-2xl p-5 border border-slate-200 space-y-4">
               <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 pb-3">
                 <div>
                   <h4 class="font-display font-bold text-base text-slate-900">Pricelist &amp; Invoice Builder</h4>
@@ -974,7 +956,6 @@
                 </button>
               </div>
 
-              <!-- Customer & Vehicle Info -->
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
                   <label class="block text-[11px] font-bold text-slate-600 mb-1">No. Invoice</label>
@@ -1005,7 +986,6 @@
                 </div>
               </div>
 
-              <!-- Quick Add From Pricelist -->
               <div class="p-3 rounded-xl bg-orange-50/70 border border-orange-200/80 flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
                 <select id="invPricelistPicker" class="flex-1 px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-medium"></select>
                 <button type="button" onclick="addPricelistItemToInvoice()" class="px-4 py-2 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold whitespace-nowrap cursor-pointer">
@@ -1013,7 +993,6 @@
                 </button>
               </div>
 
-              <!-- Line Items Table -->
               <div class="overflow-x-auto border border-slate-200 rounded-xl">
                 <table class="w-full text-left border-collapse text-xs">
                   <thead class="bg-slate-100 text-slate-700 font-bold">
@@ -1033,7 +1012,6 @@
                 + Tambah Baris Item Custom
               </button>
 
-              <!-- Discount & Notes -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
                 <div>
                   <label class="block text-[11px] font-bold text-slate-600 mb-1">Diskon (Rp)</label>
@@ -1046,54 +1024,86 @@
               </div>
             </div>
 
-            <!-- Right: Live Printable Invoice + Google Sheets Export / Webhook -->
-            <div class="lg:col-span-5 space-y-4">
+            <div class="lg:col-span-6 space-y-4">
 
-              <!-- Printable Invoice Preview -->
-              <div id="invoicePrintArea" class="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs space-y-4">
-                <div class="flex items-start justify-between border-b border-slate-200 pb-3">
-                  <div>
-                    <p class="text-[10px] font-extrabold uppercase tracking-widest text-orange-600">INVOICE SERVIS &amp; PRICELIST</p>
-                    <h5 id="prevBrandTitle" class="font-display font-extrabold text-lg text-slate-900">3 GARAGE</h5>
-                    <p class="text-[11px] text-slate-500">Subaru &amp; Mazda Specialist</p>
+              <!-- Clean Printable Invoice Preview with assets/logo-3garage.png -->
+              <div id="invoicePrintArea" class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs space-y-5">
+                <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4 border-b-2 border-slate-900 pb-4">
+                  <div class="flex items-start gap-3.5">
+                    <div class="w-14 h-14 rounded-xl bg-white border border-slate-200 p-1.5 flex items-center justify-center shrink-0 overflow-hidden">
+                      <img src="assets/logo-3garage.png" alt="Logo 3 GARAGE" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" class="w-full h-full object-contain" />
+                      <svg viewBox="0 0 120 100" class="w-full h-full hidden">
+                        <polygon points="34,12 52,12 36,54 18,54" fill="#0F172A" />
+                        <polygon points="58,12 76,12 60,54 42,54" fill="#0F172A" />
+                        <polygon points="82,12 100,12 84,54 66,54" fill="#0F172A" />
+                        <path d="M52,72 C76,68 95,54 94,32 C105,45 102,68 72,77 Z" fill="#F97316" />
+                        <path d="M12,84 L82,66 C98,62 108,52 109,38 C113,56 104,72 80,79 L12,92 Z" fill="#0F172A" />
+                      </svg>
+                    </div>
+                    <div>
+                      <span class="inline-block px-2 py-0.5 rounded bg-orange-500/15 text-orange-700 text-[10px] font-extrabold uppercase tracking-wider">
+                        INVOICE SERVIS &amp; PRICELIST
+                      </span>
+                      <h5 id="prevBrandTitle" class="font-display font-extrabold text-xl text-slate-900 mt-0.5">3 GARAGE</h5>
+                      <p class="text-xs font-semibold text-slate-600">Subaru &amp; Mazda Specialist</p>
+                      <p id="prevWorkshopAddr" class="text-[11px] text-slate-500 mt-0.5">RUKO FRANKFURT, Gading Serpong, BLOK F/09, Klp. Dua, Kecamatan Kelapa Dua, Kabupaten Tangerang, Banten 15810</p>
+                    </div>
                   </div>
-                  <div class="text-right text-xs">
-                    <p class="font-bold text-slate-900" id="prevInvNumber">INV-3G-001</p>
-                    <p class="text-slate-500" id="prevInvDate">-</p>
+                  <div class="sm:text-right text-xs bg-slate-50 sm:bg-transparent p-2.5 sm:p-0 rounded-xl">
+                    <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Nomor Invoice</p>
+                    <p class="font-mono font-extrabold text-sm text-slate-900" id="prevInvNumber">INV-3G-001</p>
+                    <p class="text-slate-500 mt-0.5">Tanggal: <span id="prevInvDate" class="font-semibold text-slate-700">-</span></p>
                   </div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-2 text-xs bg-slate-50 p-3 rounded-xl">
-                  <div>
-                    <p class="text-[10px] uppercase font-bold text-slate-400">Pelanggan</p>
-                    <p class="font-bold text-slate-800" id="prevCustomer">-</p>
-                    <p class="text-slate-500" id="prevPhone">-</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-slate-50 p-3.5 rounded-xl border border-slate-200/70">
+                  <div class="space-y-0.5">
+                    <p class="text-[10px] uppercase font-extrabold tracking-wider text-orange-600">Data Pelanggan</p>
+                    <p class="font-bold text-sm text-slate-900" id="prevCustomer">-</p>
+                    <p class="text-slate-600">WA: <span id="prevPhone">-</span></p>
                   </div>
-                  <div>
-                    <p class="text-[10px] uppercase font-bold text-slate-400">Unit Kendaraan</p>
-                    <p class="font-bold text-slate-800" id="prevCar">-</p>
-                    <p class="text-slate-500" id="prevPlate">-</p>
-                  </div>
-                </div>
-
-                <div id="prevItemsList" class="space-y-1.5 text-xs border-b border-slate-200 pb-3"></div>
-
-                <div class="space-y-1 text-xs">
-                  <div class="flex justify-between text-slate-600">
-                    <span>Subtotal</span>
-                    <span id="prevSubtotal" class="font-semibold">Rp 0</span>
-                  </div>
-                  <div class="flex justify-between text-slate-600">
-                    <span>Diskon</span>
-                    <span id="prevDiscount" class="font-semibold text-emerald-600">- Rp 0</span>
-                  </div>
-                  <div class="flex justify-between text-sm font-extrabold text-slate-900 pt-1.5 border-t border-slate-200">
-                    <span>TOTAL TAGIHAN</span>
-                    <span id="prevTotal" class="text-orange-600">Rp 0</span>
+                  <div class="space-y-0.5 sm:text-right">
+                    <p class="text-[10px] uppercase font-extrabold tracking-wider text-orange-600">Unit Kendaraan</p>
+                    <p class="font-bold text-sm text-slate-900" id="prevCar">-</p>
+                    <p class="text-slate-600">No. Plat: <span id="prevPlate" class="font-semibold">-</span></p>
                   </div>
                 </div>
 
-                <p id="prevNotes" class="text-[11px] text-slate-500 italic"></p>
+                <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                  <table class="w-full text-left border-collapse text-xs">
+                    <thead class="bg-slate-900 text-white">
+                      <tr>
+                        <th class="py-2.5 px-3 font-semibold">Deskripsi Layanan / Item</th>
+                        <th class="py-2.5 px-2.5 font-semibold text-center w-14">Qty</th>
+                        <th class="py-2.5 px-2.5 font-semibold text-right w-28">Harga</th>
+                        <th class="py-2.5 px-3 font-semibold text-right w-32">Jumlah</th>
+                      </tr>
+                    </thead>
+                    <tbody id="prevItemsList" class="divide-y divide-slate-200"></tbody>
+                  </table>
+                </div>
+
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pt-1">
+                  <div class="text-xs text-slate-500 max-w-xs space-y-1">
+                    <p id="prevNotes" class="italic text-slate-600"></p>
+                    <p class="text-[11px] text-slate-400">Terima kasih telah mempercayakan perawatan kendaraan Anda di 3 GARAGE.</p>
+                  </div>
+
+                  <div class="w-full sm:w-64 space-y-1.5 text-xs bg-slate-50 p-3.5 rounded-xl border border-slate-200/80">
+                    <div class="flex justify-between text-slate-600">
+                      <span>Subtotal</span>
+                      <span id="prevSubtotal" class="font-semibold text-slate-900">Rp 0</span>
+                    </div>
+                    <div class="flex justify-between text-slate-600">
+                      <span>Diskon</span>
+                      <span id="prevDiscount" class="font-semibold text-emerald-700">- Rp 0</span>
+                    </div>
+                    <div class="flex justify-between text-sm font-extrabold text-slate-900 pt-2 border-t border-slate-300">
+                      <span>TOTAL TAGIHAN</span>
+                      <span id="prevTotal" class="text-orange-600">Rp 0</span>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <!-- Export & Google Sheets Actions -->
@@ -1113,7 +1123,6 @@
                   Cetak / Simpan PDF Invoice
                 </button>
 
-                <!-- Optional Google Apps Script Webhook URL -->
                 <div class="pt-2 border-t border-slate-100 space-y-2">
                   <label class="block text-[11px] font-bold text-slate-600">Google Apps Script Web App URL (Opsional)</label>
                   <div class="flex gap-2">
@@ -1131,7 +1140,6 @@
             </div>
           </div>
 
-          <!-- Collapsible Google Apps Script Helper Box -->
           <div id="appsScriptGuideBox" class="no-print hidden bg-slate-900 text-slate-200 rounded-2xl p-5 border border-slate-800 space-y-3">
             <div class="flex items-center justify-between">
               <h5 class="font-display font-bold text-sm text-orange-400">Kode Google Apps Script untuk Menerima Invoice Otomatis</h5>
@@ -1204,20 +1212,11 @@
     </div>
   </div>
 
-  <!-- ===================================================================== -->
-  <!-- APPLICATION JAVASCRIPT                                                  -->
-  <!-- ===================================================================== -->
-  <!-- APPLICATION JAVASCRIPT (MODULAR ARCHITECTURE)                         -->
-  <!-- ===================================================================== -->
+  <!-- APPLICATION JAVASCRIPT (MODULAR ARCHITECTURE) -->
   <script src="data.js"></script>
   <script src="pricelist.js"></script>
   <script src="workshop.js"></script>
   <script>
-    /**
-     * Unified Application State & UI Controller
-     * Uses external data.js, pricelist.js, and workshop.js when loaded,
-     * with seamless built-in fallback for single-file sandbox previews.
-     */
     (function initGarage3App() {
       const extData = window.GARAGE3_DATA || {};
       const STORAGE_KEYS = extData.storageKeys || {
@@ -1231,12 +1230,12 @@
         workshop: {
           brandName: '3 GARAGE',
           tagline: 'SUBARU & MAZDA SPECIALIST',
-          waNumber: '6281234567890',
+          waNumber: '6281287691811',
           heroBadge: 'Spesialis Boxer Engine, AWD/CVT Subaru & Skyactiv Mazda',
           heroTitle: 'Perawatan Presisi & Performa Optimal untuk Subaru & Mazda Anda.',
           heroSubtitle: '3 GARAGE hadir dengan standar diagnosa terarah, suku cadang terkurasi, serta mekanik berpengalaman khusus platform Subaru Boxer & Mazda Skyactiv — lengkap dengan transparansi estimasi biaya, booking cepat, dan konsultasi langsung via WhatsApp.',
-          address: 'Jl. Otomotif Spesialis No. 3, Kawasan Bengkel — Indonesia',
-          hours: 'Senin – Sabtu: 08.30 – 17.30 WIB • Minggu & Hari Besar: By Appointment'
+          address: 'RUKO FRANKFURT, Gading Serpong, BLOK F/09, Klp. Dua, Kecamatan Kelapa Dua, Kabupaten Tangerang, Banten 15810',
+          hours: 'Senin – Sabtu: 09.00 – 17.00 WIB • Minggu & Hari Besar: By Appointment'
         },
         services: [
           {
@@ -1344,7 +1343,7 @@
           return window.Garage3Workshop.sanitizeWaNumber(numStr);
         }
         const digits = String(numStr || '').replace(/\D/g, '');
-        if (!digits) return '6281234567890';
+        if (!digits) return '6281287691811';
         return digits.startsWith('0') ? '62' + digits.slice(1) : digits;
       }
 
@@ -1406,6 +1405,7 @@
         setElText('footerWaDisplay', '+' + sanitizeWaNumber(w.waNumber));
         setElText('copyrightBrand', `${w.brandName} — ${w.tagline}`);
         setElText('prevBrandTitle', w.brandName);
+        setElText('prevWorkshopAddr', w.address);
 
         window.renderServices();
         window.populateBookingServiceSelect();
@@ -1830,7 +1830,18 @@
         const itemsListEl = document.getElementById('prevItemsList');
         if (itemsListEl) {
           itemsListEl.innerHTML = d.items
-            .map(r => `<div class="flex justify-between gap-2"><span class="text-slate-700">${escapeHtml(r.name || 'Item')} <span class="text-slate-400">x${r.qty}</span></span><span class="font-semibold text-slate-900 whitespace-nowrap">${formatRupiah((r.qty || 0) * (r.price || 0))}</span></div>`)
+            .map(r => {
+              const qty = Number(r.qty) || 0;
+              const price = Number(r.price) || 0;
+              return `
+                <tr>
+                  <td class="py-2 px-3 font-medium text-slate-800">${escapeHtml(r.name || 'Item')}</td>
+                  <td class="py-2 px-2.5 text-center text-slate-600">${qty}</td>
+                  <td class="py-2 px-2.5 text-right text-slate-600 whitespace-nowrap">${formatRupiah(price)}</td>
+                  <td class="py-2 px-3 text-right font-bold text-slate-900 whitespace-nowrap">${formatRupiah(qty * price)}</td>
+                </tr>
+              `;
+            })
             .join('');
         }
         setEl('prevSubtotal', formatRupiah(d.subtotal));
@@ -1940,19 +1951,19 @@
       const REPO_FILE_SPECS = {
         'assets/README.md': {
           desc: 'Panduan penempatan logo 3 GARAGE & aset visual di folder assets/',
-          code: `# Folder \`assets/\` — 3 GARAGE (Subaru & Mazda Specialist)\n\nFolder ini digunakan untuk menyimpan aset visual dan file pendukung pada repository GitHub **\`kurniawan-arry/bengkel-3garage\`**:\n\n- \`assets/logo-3garage.png\` — File logo utama **3 GARAGE — SUBARU & MAZDA SPECIALIST** (3 bilah miring hitam dengan aksen lengkungan oranye dan tipografi tegas).\n- \`assets/workshop-bay.jpg\` — Foto/ilustrasi area pengerjaan bengkel Subaru & Mazda.\n- \`assets/content.json\` — (Opsional) Salinan JSON hasil export dari panel Admin CMS agar perubahan pricelist dan profil bengkel dapat di-commit ke GitHub.`
+          code: `# Folder \`assets/\` — 3 GARAGE (Subaru & Mazda Specialist)\n\nFolder ini digunakan untuk menyimpan aset visual dan file pendukung pada repository GitHub **\`kurniawan-arry/bengkel-3garage\`**:\n\n- \`assets/logo-3garage.png\` — File logo utama **3 GARAGE — SUBARU & MAZDA SPECIALIST**.\n- \`assets/workshop-bay.jpg\` — Foto/ilustrasi area pengerjaan bengkel Subaru & Mazda.\n- \`assets/content.json\` — Data konten lengkap hasil export dari panel Admin CMS.`
         },
         'data.js': {
           desc: 'Data awal profil bengkel 3 GARAGE, nomor WA, alamat, FAQ, dan pricelist Subaru & Mazda',
-          code: `/**\n * data.js\n * Data awal/default untuk aplikasi web 3 GARAGE — SUBARU & MAZDA SPECIALIST.\n */\nconst GARAGE3_DATA = ${JSON.stringify({ storageKeys: STORAGE_KEYS, defaultPin: DEFAULT_PIN, defaultContent: { ...DEFAULT_CONTENT, faqs: extData.defaultContent?.faqs || [] } }, null, 2)};\n\nif (typeof window !== 'undefined') {\n  window.GARAGE3_DATA = GARAGE3_DATA;\n}`
+          code: `const GARAGE3_DATA = ${JSON.stringify({ storageKeys: STORAGE_KEYS, defaultPin: DEFAULT_PIN, defaultContent: { ...DEFAULT_CONTENT, faqs: extData.defaultContent?.faqs || [] } }, null, 2)};\n\nif (typeof window !== 'undefined') {\n  window.GARAGE3_DATA = GARAGE3_DATA;\n}`
         },
         'pricelist.js': {
           desc: 'Modul perhitungan IDR, rakitan invoice, format TSV/CSV Google Sheets & Google Apps Script',
-          code: `/**\n * pricelist.js\n * Modul logika pricelist & generator invoice Google Sheets untuk 3 GARAGE.\n */\nconst Garage3Pricelist = {\n  formatRupiah(amount) {\n    const num = Number(amount) || 0;\n    return 'Rp ' + num.toLocaleString('id-ID');\n  },\n  calculateTotals(items = [], discount = 0) {\n    const subtotal = (items || []).reduce((acc, row) => {\n      const qty = Math.max(0, Number(row.qty) || 0);\n      const price = Math.max(0, Number(row.price) || 0);\n      return acc + qty * price;\n    }, 0);\n    const cleanDiscount = Math.max(0, Number(discount) || 0);\n    const total = Math.max(0, subtotal - cleanDiscount);\n    return { subtotal, discount: cleanDiscount, total };\n  },\n  summarizeItems(items = []) {\n    return (items || []).map(r => \`\${r.name || 'Item'} (x\${Number(r.qty) || 1})\`).join('; ');\n  },\n  buildTSV(invoice) {\n    const totals = this.calculateTotals(invoice.items, invoice.discount);\n    const headers = ['No Invoice', 'Tanggal', 'Pelanggan', 'No WA', 'Kendaraan', 'No Plat', 'Items', 'Subtotal', 'Diskon', 'Total', 'Catatan'].join('\\t');\n    const row = [invoice.invNumber || '', invoice.invDate || '', invoice.customer || '', invoice.phone || '', invoice.car || '', invoice.plate || '', this.summarizeItems(invoice.items), totals.subtotal, totals.discount, totals.total, invoice.notes || ''].join('\\t');\n    return \`\${headers}\\n\${row}\`;\n  },\n  buildCSV(invoice) {\n    const totals = this.calculateTotals(invoice.items, invoice.discount);\n    const rows = [\n      ['No Invoice', 'Tanggal', 'Pelanggan', 'No WA', 'Kendaraan', 'No Plat', 'Items', 'Subtotal', 'Diskon', 'Total', 'Catatan'],\n      [invoice.invNumber || '', invoice.invDate || '', invoice.customer || '', invoice.phone || '', invoice.car || '', invoice.plate || '', this.summarizeItems(invoice.items), totals.subtotal, totals.discount, totals.total, invoice.notes || '']\n    ];\n    return '\\uFEFF' + rows.map(r => r.map(cell => \`"\${String(cell ?? '').replace(/"/g, '""')}"\`).join(',')).join('\\n');\n  },\n  async postToGoogleSheet(webAppUrl, invoice) {\n    if (!webAppUrl) throw new Error('URL Google Apps Script belum diisi.');\n    const totals = this.calculateTotals(invoice.items, invoice.discount);\n    const payload = { ...invoice, itemsSummary: this.summarizeItems(invoice.items), subtotal: totals.subtotal, discount: totals.discount, total: totals.total };\n    await fetch(webAppUrl, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });\n    return payload;\n  }\n};\n\nif (typeof window !== 'undefined') {\n  window.Garage3Pricelist = Garage3Pricelist;\n}`
+          code: `const Garage3Pricelist = {\n  formatRupiah(amount) {\n    return 'Rp ' + (Number(amount) || 0).toLocaleString('id-ID');\n  },\n  calculateTotals(items = [], discount = 0) {\n    const subtotal = (items || []).reduce((acc, row) => acc + Math.max(0, Number(row.qty) || 0) * Math.max(0, Number(row.price) || 0), 0);\n    const cleanDiscount = Math.max(0, Number(discount) || 0);\n    return { subtotal, discount: cleanDiscount, total: Math.max(0, subtotal - cleanDiscount) };\n  }\n};\n\nif (typeof window !== 'undefined') {\n  window.Garage3Pricelist = Garage3Pricelist;\n}`
         },
         'workshop.js': {
           desc: 'Modul state CMS, CRUD pricelist tanpa edit kode, dan format pesan WhatsApp (wa.me)',
-          code: `/**\n * workshop.js\n * Modul logika aplikasi, CMS konten & pricelist tanpa edit kode, serta alur WhatsApp 3 GARAGE.\n */\nconst Garage3Workshop = {\n  sanitizeWaNumber(numStr) {\n    const digits = String(numStr || '').replace(/\\D/g, '');\n    if (!digits) return '6281234567890';\n    return digits.startsWith('0') ? '62' + digits.slice(1) : digits;\n  },\n  buildConsultMessage(brandName, { name, car, plate, notes }) {\n    return [\n      \`Halo *\${brandName}*, saya ingin konsultasi:\`,\n      name ? \`- Nama: *\${name}*\` : null,\n      car ? \`- Mobil: *\${car}*\` : null,\n      plate ? \`- Tahun / Plat: *\${plate}*\` : null,\n      notes ? \`- Keluhan / Pertanyaan: \${notes}\` : null\n    ].filter(Boolean).join('\\n');\n  },\n  buildBookingMessage(brandName, { name, phone, car, plate, service, date, time, notes }) {\n    return [\n      \`Halo *\${brandName}*, saya ingin *BOOKING SERVIS*:\`,\n      name ? \`- Nama: *\${name}*\` : null,\n      phone ? \`- No. HP/WA: *\${phone}*\` : null,\n      car ? \`- Kendaraan: *\${car}*\` : null,\n      plate ? \`- No. Plat: *\${plate}*\` : null,\n      service ? \`- Layanan: *\${service}*\` : null,\n      date || time ? \`- Jadwal: *\${date || '-'}* pukul *\${time || '-'}*\` : null,\n      notes ? \`- Catatan: \${notes}\` : null\n    ].filter(Boolean).join('\\n');\n  },\n  openWhatsApp(waNumber, message) {\n    const cleanNum = this.sanitizeWaNumber(waNumber);\n    window.open(\`https://wa.me/\${cleanNum}?text=\${encodeURIComponent(message)}\`, '_blank', 'noopener,noreferrer');\n  }\n};\n\nif (typeof window !== 'undefined') {\n  window.Garage3Workshop = Garage3Workshop;\n}`
+          code: `const Garage3Workshop = {\n  sanitizeWaNumber(numStr) {\n    const digits = String(numStr || '').replace(/\\D/g, '');\n    if (!digits) return '6281287691811';\n    return digits.startsWith('0') ? '62' + digits.slice(1) : digits;\n  },\n  openWhatsApp(waNumber, message) {\n    window.open(\`https://wa.me/\${this.sanitizeWaNumber(waNumber)}?text=\${encodeURIComponent(message)}\`, '_blank', 'noopener,noreferrer');\n  }\n};\n\nif (typeof window !== 'undefined') {\n  window.Garage3Workshop = Garage3Workshop;\n}`
         },
         'index.html': {
           desc: 'Halaman utama 3 GARAGE yang memuat data.js, pricelist.js, dan workshop.js',
@@ -1986,6 +1997,139 @@
         if (!spec) return;
         copyTextFallback(spec.code);
         showToast(`Kode ${currentInspectorFile} disalin.`);
+      };
+
+      function render3GarageLogoCanvas(size = 800) {
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, size, size);
+
+        const bars = [
+          [[225, 110], [340, 110], [235, 420], [120, 420]],
+          [[375, 110], [490, 110], [385, 420], [270, 420]],
+          [[525, 110], [640, 110], [535, 420], [420, 420]]
+        ];
+        ctx.fillStyle = '#0B0F19';
+        bars.forEach(poly => {
+          ctx.beginPath();
+          ctx.moveTo(poly[0][0], poly[0][1]);
+          for (let i = 1; i < poly.length; i++) ctx.lineTo(poly[i][0], poly[i][1]);
+          ctx.closePath();
+          ctx.fill();
+        });
+
+        ctx.fillStyle = '#F97316';
+        ctx.beginPath();
+        ctx.moveTo(335, 535);
+        ctx.bezierCurveTo(495, 515, 615, 420, 608, 255);
+        ctx.bezierCurveTo(680, 345, 655, 505, 465, 572);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = '#0B0F19';
+        ctx.beginPath();
+        ctx.moveTo(85, 610);
+        ctx.lineTo(535, 495);
+        ctx.bezierCurveTo(635, 470, 695, 405, 700, 305);
+        ctx.bezierCurveTo(725, 430, 665, 538, 515, 585);
+        ctx.lineTo(85, 665);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = '#0B0F19';
+        ctx.font = 'italic 900 102px Inter, "Plus Jakarta Sans", Arial, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('GARAGE', size / 2, 775);
+
+        ctx.font = '800 30px Inter, "Plus Jakarta Sans", Arial, sans-serif';
+        ctx.fillText('SUBARU & MAZDA SPECIALIST', size / 2, 830);
+
+        return canvas;
+      }
+
+      window.downloadLogoPng = function () {
+        const canvas = render3GarageLogoCanvas(800);
+        canvas.toBlob(blob => {
+          if (!blob) return;
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'logo-3garage.png';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          showToast('File logo-3garage.png berhasil diunduh.');
+        }, 'image/png');
+      };
+
+      window.downloadWorkshopJpg = function () {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1200;
+        canvas.height = 675;
+        const ctx = canvas.getContext('2d');
+
+        const grad = ctx.createLinearGradient(0, 0, 1200, 675);
+        grad.addColorStop(0, '#0B1120');
+        grad.addColorStop(1, '#1E293B');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, 1200, 675);
+
+        ctx.fillStyle = 'rgba(249, 115, 22, 0.16)';
+        ctx.beginPath();
+        ctx.arc(960, 160, 260, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#F97316';
+        ctx.font = 'bold 20px Inter, Arial, sans-serif';
+        ctx.fillText('3 GARAGE • RUKO FRANKFURT BLOK F/09', 72, 110);
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = '800 54px Inter, Arial, sans-serif';
+        ctx.fillText('SUBARU & MAZDA SPECIALIST', 72, 185);
+
+        ctx.fillStyle = '#CBD5E1';
+        ctx.font = '500 26px Inter, Arial, sans-serif';
+        ctx.fillText('Gading Serpong, Kelapa Dua, Kab. Tangerang, Banten 15810', 72, 240);
+
+        const bayCards = [
+          { title: '01. SUBARU BAY', sub: 'Boxer Service, AWD & CVT' },
+          { title: '02. MAZDA BAY', sub: 'Skyactiv Tune-Up & Scan' },
+          { title: '03. CHASSIS & INVOICE', sub: 'Suspensi, Rem & Google Sheet' }
+        ];
+        bayCards.forEach((c, i) => {
+          const x = 72 + i * 360;
+          const y = 320;
+          ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+          ctx.fillRect(x, y, 336, 220);
+          ctx.strokeStyle = 'rgba(249, 115, 22, 0.45)';
+          ctx.lineWidth = 2;
+          ctx.strokeRect(x, y, 336, 220);
+
+          ctx.fillStyle = '#F97316';
+          ctx.font = 'bold 20px Inter, Arial, sans-serif';
+          ctx.fillText(c.title, x + 24, y + 60);
+
+          ctx.fillStyle = '#FFFFFF';
+          ctx.font = '600 22px Inter, Arial, sans-serif';
+          ctx.fillText(c.sub, x + 24, y + 110);
+        });
+
+        canvas.toBlob(blob => {
+          if (!blob) return;
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'workshop-bay.jpg';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          showToast('File workshop-bay.jpg berhasil diunduh.');
+        }, 'image/jpeg', 0.92);
       };
 
       function boot() {
