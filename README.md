@@ -18,8 +18,6 @@ Menyusun format pesan WhatsApp secara otomatis berdasarkan data kendaraan, keluh
 
 Admin CMS Tanpa Edit HTML / JavaScript
 
-Akses melalui tombol Admin / Invoice di header (PIN default: 3garage, dapat diganti di pengaturan bengkel).
-
 Layanan & Pricelist CMS: Tambah, edit, ubah urutan (↑ / ↓), atau hapus item layanan dan harga secara langsung.
 
 Profil Bengkel & WA: Perbarui nama bengkel, nomor WhatsApp, headline hero, alamat, dan jam operasional.

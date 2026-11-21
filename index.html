@@ -510,15 +510,6 @@
           </div>
         </div>
 
-        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
-          <button type="button" onclick="toggleFaq(this)" class="w-full px-5 py-4 text-left flex items-center justify-between gap-4 font-bold text-slate-900 text-sm sm:text-base cursor-pointer">
-            <span>Bagaimana Admin mengupdate pricelist dan membuat invoice Google Sheets?</span>
-            <span class="faq-icon text-orange-600 text-xl leading-none font-bold">+</span>
-          </button>
-          <div class="faq-content hidden px-5 pb-4 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
-            Klik tombol <strong>Admin / Invoice</strong> di header (PIN default: <code class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-900 font-semibold">3garage</code>). Di dalamnya Anda bisa menambah/mengedit/menghapus layanan &amp; harga tanpa edit kode, export/import <code class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-900 font-semibold">content.json</code> untuk GitHub, serta merakit invoice untuk dicetak atau dikirim/disalin ke Google Sheets.
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -794,10 +785,10 @@
         </div>
         <h4 class="font-display font-extrabold text-xl text-slate-900">Akses Admin Bengkel</h4>
         <p class="text-sm text-slate-600">
-          Masukkan PIN Admin untuk mengubah konten, pricelist, dan membuat invoice Google Sheets. PIN default: <strong class="text-slate-900">3garage</strong>.
+          Masukkan PIN Admin untuk mengubah konten, pricelist, dan membuat invoice Google Sheets. PIN default: <strong class="text-slate-900">""</strong>.
         </p>
         <form onsubmit="verifyAdminPin(event)" class="space-y-3 pt-1">
-          <input type="password" id="adminPinInput" required placeholder="Masukkan PIN (default: 3garage)" class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white text-center text-sm font-semibold tracking-wider focus:outline-none focus:border-orange-500" />
+          <input type="password" id="adminPinInput" required placeholder="Masukkan PIN" class="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white text-center text-sm font-semibold tracking-wider focus:outline-none focus:border-orange-500" />
           <button type="submit" class="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm transition cursor-pointer">
             Masuk ke Admin Panel
           </button>
