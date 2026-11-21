@@ -305,7 +305,7 @@
             Layanan &amp; Pricelist Bengkel
           </h2>
           <p class="text-slate-600 text-sm sm:text-base mt-1.5 max-w-2xl">
-            Harga estimasi transparan dan dapat diperbarui kapan saja oleh Admin melalui panel CMS tanpa menyentuh file HTML atau JavaScript.
+            Harga estimasi transparan dan diperbarui secara berkala melalui panel Admin maupun <code class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-800 text-xs">content.json</code>.
           </p>
         </div>
 
@@ -546,7 +546,7 @@
             RUKO FRANKFURT, Gading Serpong, BLOK F/09, Klp. Dua, Kecamatan Kelapa Dua, Kabupaten Tangerang, Banten 15810
           </p>
           <p id="footerHours" class="text-slate-400">
-            Senin – Sabtu: 09.00 – 17.00 WIB • Minggu: Tutup
+            Senin – Sabtu: 08.30 – 17.30 WIB • Minggu &amp; Hari Besar: By Appointment
           </p>
           <p class="text-slate-300">
             WhatsApp: <span id="footerWaDisplay" class="font-bold text-orange-400">+62 812-8769-1811</span>
@@ -890,10 +890,10 @@
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div>
                   <label class="block text-[11px] font-bold text-slate-600 mb-1">No. WA Pelanggan</label>
-                  <input type="text" id="invPhone" oninput="updateInvoicePreview()" placeholder="081287691811" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs" />
+                  <input type="text" id="invPhone" oninput="updateInvoicePreview()" placeholder="6281287691811" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs" />
                 </div>
                 <div>
-                  <label class="block text-[11px] font-bold text-slate-600 mb-1">Kendaraan (Subaru/Mazda)</label>
+                  <label class="block text-[11px] font-bold text-slate-600 mb-1">Tipe Kendaraan</label>
                   <input type="text" id="invCar" oninput="updateInvoicePreview()" placeholder="Cth: Mazda CX-5 2020" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs" />
                 </div>
                 <div>
@@ -902,9 +902,14 @@
                 </div>
               </div>
 
+              <div>
+                <label class="block text-[11px] font-bold text-slate-600 mb-1">Kilometers (KM)</label>
+                <input type="text" id="invKm" oninput="updateInvoicePreview()" placeholder="Cth: 45.000 km" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs" />
+              </div>
+
               <div class="p-3 rounded-xl bg-orange-50/70 border border-orange-200/80 flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-                <select id="invPricelistPicker" class="flex-1 px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-medium"></select>
-                <button type="button" onclick="addPricelistItemToInvoice()" class="px-4 py-2 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold whitespace-nowrap cursor-pointer">
+                <select id="invPricelistPicker" class="min-w-0 w-full sm:flex-1 px-3 py-2 rounded-xl border border-slate-300 text-xs bg-white"></select>
+                <button type="button" onclick="addPricelistItemToInvoice()" class="w-full sm:w-auto shrink-0 px-3.5 py-2 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold whitespace-nowrap cursor-pointer">
                   + Masukkan dari Pricelist
                 </button>
               </div>
@@ -982,6 +987,7 @@
                     <p class="text-[10px] uppercase font-extrabold tracking-wider text-orange-600">Unit Kendaraan</p>
                     <p class="font-bold text-sm text-slate-900" id="prevCar">-</p>
                     <p class="text-slate-600">No. Plat: <span id="prevPlate" class="font-semibold">-</span></p>
+                    <p class="text-slate-600">Kilometers: <span id="prevKm" class="font-semibold">-</span></p>
                   </div>
                 </div>
 
@@ -1027,8 +1033,8 @@
                 <h5 class="font-display font-bold text-sm text-slate-900">Export &amp; Kirim ke Google Sheets</h5>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  <button type="button" onclick="copyInvoiceTSV()" class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold cursor-pointer">
-                    Copy Kolom untuk Sheet (TSV)
+                  <button type="button" onclick="sendInvoiceToCustomerWa()" class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold cursor-pointer">
+                    Kirim Invoice ke No. WA Pelanggan
                   </button>
                   <button type="button" onclick="downloadInvoiceCSV()" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold cursor-pointer">
                     Download CSV (Google Sheet)
@@ -1071,7 +1077,7 @@
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Invoices") || SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
     var data = JSON.parse(e.postData.contents);
     if (sheet.getLastRow() === 0) {
-      sheet.appendRow(["Timestamp", "No Invoice", "Tanggal", "Pelanggan", "No WA", "Kendaraan", "No Plat", "Items", "Subtotal", "Diskon", "Total", "Catatan"]);
+      sheet.appendRow(["Timestamp", "No Invoice", "Tanggal", "Pelanggan", "No WA", "Tipe Kendaraan", "No Plat", "Items", "Subtotal", "Diskon", "Total", "Catatan"]);
     }
     sheet.appendRow([
       new Date(),
@@ -1151,7 +1157,7 @@
           heroTitle: 'Perawatan Presisi & Performa Optimal untuk Subaru & Mazda Anda.',
           heroSubtitle: '3 GARAGE hadir dengan standar diagnosa terarah, suku cadang terkurasi, serta mekanik berpengalaman khusus platform Subaru Boxer & Mazda Skyactiv — lengkap dengan transparansi estimasi biaya, booking cepat, dan konsultasi langsung via WhatsApp.',
           address: 'RUKO FRANKFURT, Gading Serpong, BLOK F/09, Klp. Dua, Kecamatan Kelapa Dua, Kabupaten Tangerang, Banten 15810',
-          hours: 'Senin – Sabtu: 09.00 – 17.00 WIB • Minggu: Tutup'
+          hours: 'Senin – Sabtu: 08.30 – 17.30 WIB • Minggu & Hari Besar: By Appointment'
         },
         services: [
           {
@@ -1270,6 +1276,31 @@
         }
         const waNum = sanitizeWaNumber(appState.workshop.waNumber);
         window.open(`https://wa.me/${waNum}?text=${encodeURIComponent(messageText)}`, '_blank', 'noopener,noreferrer');
+      }
+
+      function triggerFileDownload(content, filename, mimeType) {
+        const blob = new Blob([content], { type: mimeType || 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      }
+
+      function copyTextFallback(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).catch(() => {});
+          return;
+        }
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
       }
 
       function showToast(message, type = 'success') {
@@ -1711,6 +1742,7 @@
         const phone = document.getElementById('invPhone')?.value.trim() || '-';
         const car = document.getElementById('invCar')?.value.trim() || '-';
         const plate = document.getElementById('invPlate')?.value.trim() || '-';
+        const km = document.getElementById('invKm')?.value.trim() || '-';
         const discount = Math.max(0, Number(document.getElementById('invDiscount')?.value) || 0);
         const notes = document.getElementById('invNotes')?.value.trim() || '';
         const totals = window.Garage3Pricelist?.calculateTotals
@@ -1726,6 +1758,7 @@
           phone,
           car,
           plate,
+          km,
           items: invoiceItems,
           itemsSummary: invoiceItems.map(r => `${r.name || 'Item'} (x${r.qty})`).join('; '),
           subtotal: totals.subtotal,
@@ -1743,61 +1776,75 @@
         setEl('prevPhone', d.phone);
         setEl('prevCar', d.car);
         setEl('prevPlate', d.plate);
+        setEl('prevKm', d.km);
         const itemsListEl = document.getElementById('prevItemsList');
         if (itemsListEl) {
           itemsListEl.innerHTML = d.items
             .map(r => {
               const qty = Number(r.qty) || 0;
               const price = Number(r.price) || 0;
+              const lineTotal = qty * price;
               return `
                 <tr>
                   <td class="py-2 px-3 font-medium text-slate-800">${escapeHtml(r.name || 'Item')}</td>
                   <td class="py-2 px-2.5 text-center text-slate-600">${qty}</td>
-                  <td class="py-2 px-2.5 text-right text-slate-600 whitespace-nowrap">${formatRupiah(price)}</td>
-                  <td class="py-2 px-3 text-right font-bold text-slate-900 whitespace-nowrap">${formatRupiah(qty * price)}</td>
+                  <td class="py-2 px-2.5 text-right text-slate-700 whitespace-nowrap">${formatRupiah(price)}</td>
+                  <td class="py-2 px-3 text-right font-bold text-slate-900 whitespace-nowrap">${formatRupiah(lineTotal)}</td>
                 </tr>
               `;
             })
             .join('');
         }
+        setEl('prevNotes', d.notes);
         setEl('prevSubtotal', formatRupiah(d.subtotal));
-        setEl('prevDiscount', '- ' + formatRupiah(d.discount));
+        setEl('prevDiscount', `- ${formatRupiah(d.discount)}`);
         setEl('prevTotal', formatRupiah(d.total));
-        setEl('prevNotes', d.notes ? `Catatan: ${d.notes}` : '');
       };
-      function copyTextFallback(text) {
-        const ta = document.createElement('textarea');
-        ta.value = text;
-        ta.style.position = 'fixed';
-        ta.style.opacity = '0';
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-      }
-      function triggerFileDownload(content, filename, mimeType) {
-        const blob = new Blob([content], { type: mimeType });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(link.href);
-      }
-      window.copyInvoiceTSV = function () {
+      window.sendInvoiceToCustomerWa = function () {
         const d = getCalculatedInvoiceData();
-        const tsv = window.Garage3Pricelist?.buildTSV
-          ? window.Garage3Pricelist.buildTSV(d)
-          : [['No Invoice', 'Tanggal', 'Pelanggan', 'No WA', 'Kendaraan', 'No Plat', 'Items', 'Subtotal', 'Diskon', 'Total', 'Catatan'].join('\t'), [d.invNumber, d.invDate, d.customer, d.phone, d.car, d.plate, d.itemsSummary, d.subtotal, d.discount, d.total, d.notes].join('\t')].join('\n');
-        copyTextFallback(tsv);
-        showToast('Baris invoice (TSV) disalin untuk Google Sheets.');
+        const digitsOnly = String(d.phone || '').replace(/\D/g, '');
+        if (!digitsOnly) {
+          showToast('Masukkan No. WA Pelanggan dengan awalan 62 terlebih dahulu.', 'error');
+          return;
+        }
+        const targetWa = sanitizeWaNumber(digitsOnly);
+        const itemLines = d.items
+          .map(r => {
+            const qty = Number(r.qty) || 1;
+            const price = Number(r.price) || 0;
+            return `- ${r.name || 'Item'} (x${qty}): ${formatRupiah(qty * price)}`;
+          })
+          .join('\n');
+
+        const message = [
+          `Halo *${d.customer === '-' ? 'Pelanggan' : d.customer}*, berikut rincian *INVOICE* dari *${appState.workshop.brandName}* (${appState.workshop.tagline}):`,
+          `No. Invoice: *${d.invNumber}*`,
+          `Tanggal: *${d.invDate || '-'}*`,
+          `Tipe Kendaraan: *${d.car}*`,
+          `No. Plat: *${d.plate}*`,
+          `Kilometers: *${d.km}*`,
+          '',
+          '*Rincian Item:*',
+          itemLines || '-',
+          '',
+          `Subtotal: ${formatRupiah(d.subtotal)}`,
+          `Diskon: - ${formatRupiah(d.discount)}`,
+          `*Total Tagihan: ${formatRupiah(d.total)}*`,
+          d.notes ? `Catatan: ${d.notes}` : null,
+          '',
+          `Alamat: ${appState.workshop.address}`
+        ]
+          .filter(Boolean)
+          .join('\n');
+
+        window.open(`https://wa.me/${targetWa}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
+        showToast(`Membuka WhatsApp ke +${targetWa}...`);
       };
       window.downloadInvoiceCSV = function () {
         const d = getCalculatedInvoiceData();
         const csv = window.Garage3Pricelist?.buildCSV
           ? window.Garage3Pricelist.buildCSV(d)
-          : '\uFEFF' + [['No Invoice', 'Tanggal', 'Pelanggan', 'No WA', 'Kendaraan', 'No Plat', 'Items', 'Subtotal', 'Diskon', 'Total', 'Catatan'], [d.invNumber, d.invDate, d.customer, d.phone, d.car, d.plate, d.itemsSummary, d.subtotal, d.discount, d.total, d.notes]].map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
+          : '\uFEFF' + [['No Invoice', 'Tanggal', 'Pelanggan', 'No WA', 'Tipe Kendaraan', 'No Plat', 'Items', 'Subtotal', 'Diskon', 'Total', 'Catatan'], [d.invNumber, d.invDate, d.customer, d.phone, d.car, d.plate, d.itemsSummary, d.subtotal, d.discount, d.total, d.notes]].map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
         triggerFileDownload(csv, `${d.invNumber}.csv`, 'text/csv;charset=utf-8;');
       };
       window.saveGsUrl = function () {
