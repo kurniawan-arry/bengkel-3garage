@@ -83,10 +83,6 @@ category": "General",
 {
 "question": "Bagaimana cara booking servis atau konsultasi keluhan?",
 "answer": "Klik tombol Konsultasi WA atau Booking Servis WA, isi detail kendaraan & keluhan atau jadwal yang diinginkan, lalu sistem akan menyusun pesan otomatis dan membukanya ke WhatsApp bengkel."
-},
-{
-"question": "Bagaimana Admin mengupdate pricelist dan membuat invoice Google Sheets?",
-"answer": "Buka menu Admin / Invoice (PIN default: 3garage) untuk menambah/mengedit/menghapus layanan & harga tanpa edit kode, export/import content.json untuk GitHub, serta merakit invoice untuk dicetak atau dikirim/disalin ke Google Sheets."
 }
 ]
 }
