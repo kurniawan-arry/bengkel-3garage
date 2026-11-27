@@ -8,7 +8,9 @@ const GARAGE3_DATA = {
     pin: 'garage3_admin_pin_v1',
     gsUrl: 'garage3_gs_url_v1'
   },
-  defaultPin: '3Garage2026',
+  defaultPin: '3garage',
+  // Opsional: isi URL Google Apps Script Web App Anda di sini agar langsung aktif di semua perangkat
+  defaultGsWebAppUrl: 'https://script.google.com/macros/s/AKfycbykBXjdlEODxpih-i_yb2j1bHyI4S40Nc9rU03xwm7uh9zad84mDXPp5etagpPHstervg/exec',
   defaultContent: {
     workshop: {
       brandName: '3 GARAGE',
@@ -70,10 +72,40 @@ const GARAGE3_DATA = {
         description: 'Jasa bongkar pasang shock absorber, arm/bushing, link stabilizer, bearing roda, serta servis kampas & piringan rem.'
       }
     ],
+    gallery: [
+      {
+        id: 'gal-1',
+        badge: 'Boxer & AWD Bay',
+        subtitle: 'Subaru Platform',
+        title: 'Engine & Drivetrain',
+        image: '',
+        description: 'Ganti oli mesin & gardan/CVT, pengecekan kebocoran seal Boxer, busi, koil, hingga tune-up berkala Subaru XV, Forester, Impreza & Levorg.'
+      },
+      {
+        id: 'gal-2',
+        badge: 'Skyactiv Bay',
+        subtitle: 'Mazda Platform',
+        title: 'Tune-Up & Diagnostics',
+        image: '',
+        description: 'Perawatan berkala Mazda CX-5, CX-3, CX-30, Mazda3 & Mazda6: pembersihan throttle/intake, rem, transmisi otomatis, dan scan error kode.'
+      },
+      {
+        id: 'gal-3',
+        badge: 'Chassis & Handling',
+        subtitle: 'Suspension & Brakes',
+        title: 'Kaki-Kaki & Pengereman',
+        image: '',
+        description: 'Perbaikan shock absorber, bushing arm, link stabilizer, bearing roda, kampas & rotor rem agar stabilitas berkendara tetap mantap.'
+      }
+    ],
     faqs: [
       {
         question: 'Apakah 3 GARAGE hanya melayani Subaru dan Mazda saja?',
         answer: 'Spesialisasi utama kami berada pada lini kendaraan Subaru dan Mazda (Boxer NA/Turbo, AWD/CVT, Skyactiv-G/D, transmisi & kaki-kaki). Untuk pengecekan umum atau unit tertentu, silakan konsultasikan via WhatsApp.'
+      },
+      {
+        question: 'Bagaimana cara booking servis atau konsultasi keluhan?',
+        answer: 'Klik tombol Konsultasi WA atau Booking Servis WA, isi detail kendaraan & keluhan atau jadwal yang diinginkan, lalu sistem akan menyusun pesan otomatis dan membukanya ke WhatsApp bengkel.'
       }
     ]
   }

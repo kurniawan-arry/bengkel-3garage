@@ -13,6 +13,8 @@
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- jsPDF untuk generate lampiran PDF Invoice -->
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -1669,6 +1671,31 @@
         showToast('Pengaturan bengkel disimpan.');
       };
 
+      window.resetInvoiceBuilderForm = function () {
+        const dateEl = document.getElementById('invDate');
+        if (dateEl) dateEl.value = new Date().toISOString().split('T')[0];
+
+        const setFieldVal = (id, val) => {
+          const el = document.getElementById(id);
+          if (el) el.value = val;
+        };
+        setFieldVal('invCustomer', '');
+        setFieldVal('invPhone', '');
+        setFieldVal('invCar', '');
+        setFieldVal('invPlate', '');
+        setFieldVal('invKm', '');
+        setFieldVal('invDiscount', '0');
+        setFieldVal('invNotes', '');
+
+        const firstSrv = appState.services[0];
+        invoiceItems = firstSrv
+          ? [{ name: firstSrv.title, qty: 1, price: Number(firstSrv.price) || 0 }]
+          : [{ name: '', qty: 1, price: 0 }];
+
+        window.renderInvoiceItemsTable();
+        window.generateNewInvoiceNumber();
+      };
+
       window.initInvoiceDefaults = function () {
         const dateEl = document.getElementById('invDate');
         if (dateEl && !dateEl.value) dateEl.value = new Date().toISOString().split('T')[0];
@@ -1800,7 +1827,286 @@
         setEl('prevDiscount', `- ${formatRupiah(d.discount)}`);
         setEl('prevTotal', formatRupiah(d.total));
       };
-      window.sendInvoiceToCustomerWa = function () {
+
+      async function getWorkshopLogoDataUrl() {
+        try {
+          const imgEl = document.querySelector('#invoicePrintArea img');
+          if (imgEl && imgEl.complete && imgEl.naturalWidth > 0) {
+            const canvas = document.createElement('canvas');
+            canvas.width = imgEl.naturalWidth;
+            canvas.height = imgEl.naturalHeight;
+            const ctx = canvas.getContext('2d');
+            if (ctx) {
+              ctx.drawImage(imgEl, 0, 0);
+              return canvas.toDataURL('image/png');
+            }
+          }
+        } catch (e) {}
+
+        try {
+          const response = await fetch('assets/logo-3garage.png', { cache: 'no-store' });
+          if (!response.ok) return null;
+          const blob = await response.blob();
+          return await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(typeof reader.result === 'string' ? reader.result : null);
+            reader.onerror = () => resolve(null);
+            reader.readAsDataURL(blob);
+          });
+        } catch (err) {
+          return null;
+        }
+      }
+
+      function drawFallbackGarageLogo(doc, x, y, size) {
+        const s = size / 100;
+        doc.setFillColor(15, 23, 42);
+        doc.lines(
+          [
+            [18 * s, 0],
+            [-16 * s, 42 * s],
+            [-18 * s, 0]
+          ],
+          x + 34 * s,
+          y + 12 * s,
+          [1, 1],
+          'F',
+          true
+        );
+        doc.lines(
+          [
+            [18 * s, 0],
+            [-16 * s, 42 * s],
+            [-18 * s, 0]
+          ],
+          x + 58 * s,
+          y + 12 * s,
+          [1, 1],
+          'F',
+          true
+        );
+        doc.lines(
+          [
+            [18 * s, 0],
+            [-16 * s, 42 * s],
+            [-18 * s, 0]
+          ],
+          x + 82 * s,
+          y + 12 * s,
+          [1, 1],
+          'F',
+          true
+        );
+
+        doc.setFillColor(249, 115, 22);
+        doc.lines(
+          [
+            [24 * s, -4 * s],
+            [18 * s, -22 * s],
+            [-22 * s, 45 * s]
+          ],
+          x + 52 * s,
+          y + 72 * s,
+          [1, 1],
+          'F',
+          true
+        );
+
+        doc.setFillColor(15, 23, 42);
+        doc.lines(
+          [
+            [70 * s, -18 * s],
+            [27 * s, -28 * s],
+            [-68 * s, 54 * s]
+          ],
+          x + 12 * s,
+          y + 84 * s,
+          [1, 1],
+          'F',
+          true
+        );
+      }
+
+      async function generateAndDownloadInvoicePdf(d) {
+        const jsPDFCtor = window.jspdf && window.jspdf.jsPDF;
+        if (!jsPDFCtor) return false;
+
+        const doc = new jsPDFCtor({ unit: 'pt', format: 'a4' });
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const margin = 40;
+        let y = 40;
+
+        // Logo box di kiri (mirip preview invoice web)
+        doc.setDrawColor(226, 232, 240);
+        doc.setFillColor(255, 255, 255);
+        doc.setLineWidth(1);
+        doc.roundedRect(margin, y, 48, 48, 8, 8, 'FD');
+
+        const logoDataUrl = await getWorkshopLogoDataUrl();
+        let logoRendered = false;
+        if (logoDataUrl) {
+          try {
+            const imgFormat = logoDataUrl.includes('image/jpeg') ? 'JPEG' : 'PNG';
+            doc.addImage(logoDataUrl, imgFormat, margin + 5, y + 5, 38, 38);
+            logoRendered = true;
+          } catch (e) {}
+        }
+        if (!logoRendered) {
+          drawFallbackGarageLogo(doc, margin + 4, y + 4, 40);
+        }
+
+        // Blok identitas bengkel di sebelah logo
+        const titleX = margin + 58;
+        doc.setFillColor(255, 237, 213);
+        doc.roundedRect(titleX, y - 2, 128, 15, 3, 3, 'F');
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(7.5);
+        doc.setTextColor(194, 65, 12);
+        doc.text('INVOICE SERVIS & PRICELIST', titleX + 6, y + 8);
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(15.5);
+        doc.setTextColor(15, 23, 42);
+        doc.text(String(appState.workshop.brandName || '3 GARAGE'), titleX, y + 27);
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(9);
+        doc.setTextColor(71, 85, 105);
+        doc.text('Subaru & Mazda Specialist', titleX, y + 40);
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8.2);
+        doc.setTextColor(100, 116, 139);
+        const addrLines = doc.splitTextToSize(String(appState.workshop.address || ''), 255);
+        doc.text(addrLines, titleX, y + 52);
+
+        // Blok Nomor Invoice & Tanggal di kanan (mirip preview invoice web)
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(7.5);
+        doc.setTextColor(148, 163, 184);
+        doc.text('NOMOR INVOICE', pageWidth - margin, y + 6, { align: 'right' });
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(10.5);
+        doc.setTextColor(15, 23, 42);
+        doc.text(String(d.invNumber || ''), pageWidth - margin, y + 20, { align: 'right' });
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8.8);
+        doc.setTextColor(100, 116, 139);
+        doc.text('Tanggal: ', pageWidth - margin - 52, y + 34, { align: 'right' });
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(51, 65, 85);
+        doc.text(String(d.invDate || '-'), pageWidth - margin, y + 34, { align: 'right' });
+
+        const headerBottomY = Math.max(y + 52 + addrLines.length * 10, y + 54);
+        y = headerBottomY + 10;
+        doc.setDrawColor(15, 23, 42);
+        doc.setLineWidth(1.5);
+        doc.line(margin, y, pageWidth - margin, y);
+
+        y += 18;
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(9);
+        doc.setTextColor(234, 88, 12);
+        doc.text('DATA PELANGGAN', margin, y);
+        doc.text('UNIT KENDARAAN', pageWidth / 2 + 10, y);
+
+        y += 14;
+        doc.setFontSize(10);
+        doc.setTextColor(15, 23, 42);
+        doc.text(d.customer || '-', margin, y);
+        doc.text(d.car || '-', pageWidth / 2 + 10, y);
+
+        y += 13;
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9);
+        doc.setTextColor(71, 85, 105);
+        doc.text(`No. WA: ${d.phone || '-'}`, margin, y);
+        doc.text(`No. Plat: ${d.plate || '-'}`, pageWidth / 2 + 10, y);
+
+        y += 13;
+        doc.text(`Kilometers: ${d.km || '-'}`, pageWidth / 2 + 10, y);
+
+        y += 22;
+        doc.setFillColor(15, 23, 42);
+        doc.rect(margin, y, pageWidth - margin * 2, 22, 'F');
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(8.5);
+        doc.setTextColor(255, 255, 255);
+        doc.text('Deskripsi Layanan / Item', margin + 8, y + 14);
+        doc.text('Qty', pageWidth - margin - 175, y + 14, { align: 'center' });
+        doc.text('Harga', pageWidth - margin - 95, y + 14, { align: 'right' });
+        doc.text('Jumlah', pageWidth - margin - 8, y + 14, { align: 'right' });
+
+        y += 22;
+        doc.setTextColor(15, 23, 42);
+        (d.items || []).forEach((r) => {
+          const qty = Number(r.qty) || 0;
+          const price = Number(r.price) || 0;
+          const lineTotal = qty * price;
+          const itemLines = doc.splitTextToSize(r.name || 'Item', pageWidth - margin * 2 - 220);
+          const rowHeight = Math.max(20, itemLines.length * 12 + 8);
+
+          if (y + rowHeight > doc.internal.pageSize.getHeight() - 110) {
+            doc.addPage();
+            y = 45;
+          }
+
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(8.5);
+          doc.text(itemLines, margin + 8, y + 13);
+          doc.text(String(qty), pageWidth - margin - 175, y + 13, { align: 'center' });
+          doc.text(formatRupiah(price), pageWidth - margin - 95, y + 13, { align: 'right' });
+
+          doc.setFont('helvetica', 'bold');
+          doc.text(formatRupiah(lineTotal), pageWidth - margin - 8, y + 13, { align: 'right' });
+
+          doc.setDrawColor(226, 232, 240);
+          doc.setLineWidth(0.6);
+          doc.line(margin, y + rowHeight, pageWidth - margin, y + rowHeight);
+          y += rowHeight;
+        });
+
+        y += 16;
+        const summaryX = pageWidth - margin - 210;
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9);
+        doc.setTextColor(71, 85, 105);
+        doc.text('Subtotal', summaryX, y);
+        doc.text(formatRupiah(d.subtotal), pageWidth - margin, y, { align: 'right' });
+
+        y += 15;
+        doc.text('Diskon', summaryX, y);
+        doc.text(`- ${formatRupiah(d.discount)}`, pageWidth - margin, y, { align: 'right' });
+
+        y += 10;
+        doc.setDrawColor(148, 163, 184);
+        doc.line(summaryX, y, pageWidth - margin, y);
+
+        y += 16;
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(10.5);
+        doc.setTextColor(15, 23, 42);
+        doc.text('TOTAL TAGIHAN', summaryX, y);
+        doc.setTextColor(234, 88, 12);
+        doc.text(formatRupiah(d.total), pageWidth - margin, y, { align: 'right' });
+
+        if (d.notes) {
+          y += 28;
+          doc.setFont('helvetica', 'italic');
+          doc.setFontSize(8.5);
+          doc.setTextColor(71, 85, 105);
+          const noteLines = doc.splitTextToSize(`Catatan: ${d.notes}`, pageWidth - margin * 2);
+          doc.text(noteLines, margin, y);
+        }
+
+        const safeFileName = `${String(d.invNumber || 'Invoice').replace(/[^a-zA-Z0-9_-]/g, '_')}.pdf`;
+        doc.save(safeFileName);
+        return true;
+      }
+
+      window.sendInvoiceToCustomerWa = async function () {
         const d = getCalculatedInvoiceData();
         const digitsOnly = String(d.phone || '').replace(/\D/g, '');
         if (!digitsOnly) {
@@ -1808,38 +2114,39 @@
           return;
         }
         const targetWa = sanitizeWaNumber(digitsOnly);
-        const itemLines = d.items
-          .map(r => {
-            const qty = Number(r.qty) || 1;
-            const price = Number(r.price) || 0;
-            return `- ${r.name || 'Item'} (x${qty}): ${formatRupiah(qty * price)}`;
-          })
-          .join('\n');
+        const namaPelanggan = d.customer && d.customer !== '-' ? d.customer : 'Pelanggan';
+        const cleanInvoiceNo = String(d.invNumber || '').replace(/^#+/, '') || 'INV-3G-001';
 
         const message = [
-          `Halo *${d.customer === '-' ? 'Pelanggan' : d.customer}*, berikut rincian *INVOICE* dari *${appState.workshop.brandName}* (${appState.workshop.tagline}):`,
-          `No. Invoice: *${d.invNumber}*`,
-          `Tanggal: *${d.invDate || '-'}*`,
-          `Tipe Kendaraan: *${d.car}*`,
-          `No. Plat: *${d.plate}*`,
-          `Kilometers: *${d.km}*`,
+          `Halo ${namaPelanggan}`,
           '',
-          '*Rincian Item:*',
-          itemLines || '-',
+          'Terima kasih telah memilih 3garage sebagai bengkel kepercayaan anda.',
+          'Berikut Lampiran Invoice yang kami lampirkan ke anda.',
           '',
-          `Subtotal: ${formatRupiah(d.subtotal)}`,
-          `Diskon: - ${formatRupiah(d.discount)}`,
-          `*Total Tagihan: ${formatRupiah(d.total)}*`,
-          d.notes ? `Catatan: ${d.notes}` : null,
+          'Nomor Invoice',
+          `#${cleanInvoiceNo}`,
           '',
-          `Alamat: ${appState.workshop.address}`
-        ]
-          .filter(Boolean)
-          .join('\n');
+          'Tips:',
+          '- Gunakan metode Pembayaran Instan (Virtual Account dan Transfer).',
+          '- Anda wajib melakukan konfirmasi melalui wa.link/g9b1r0 apabila menggunakan Metode Pembayaran Manual.',
+          '- Berikut No Rek 0918172734 BCA a.n 3garage',
+          '',
+          'Salam 3garage,',
+          'Terima Kasih'
+        ].join('\n');
 
+        const pdfDownloaded = await generateAndDownloadInvoicePdf(d);
         window.open(`https://wa.me/${targetWa}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
-        showToast(`Membuka WhatsApp ke +${targetWa}...`);
+
+        window.resetInvoiceBuilderForm();
+
+        if (pdfDownloaded) {
+          showToast(`PDF ${cleanInvoiceNo}.pdf diunduh, WA +${targetWa} dibuka & form direset untuk invoice berikutnya.`);
+        } else {
+          showToast(`WA +${targetWa} dibuka & form direset untuk invoice berikutnya.`);
+        }
       };
+
       window.downloadInvoiceCSV = function () {
         const d = getCalculatedInvoiceData();
         const csv = window.Garage3Pricelist?.buildCSV
